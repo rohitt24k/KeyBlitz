@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseURL = "http://localhost:3001/api";
-const baseURL = "https://keyblitzapi.onrender.com/api";
+const baseURL = "http://localhost:3001/api";
+// const baseURL = "https://keyblitzapi.onrender.com/api";
 
 const handleSignup = async (
   name,
@@ -17,6 +17,8 @@ const handleSignup = async (
     const response = await axios.post(baseURL + "/signup", data, {
       withCredentials: true,
     });
+
+    document.cookie = `token=Bearer ${response.data}`;
     // setUserId(response.data);
     navigate("/");
   } catch (error) {
@@ -38,6 +40,8 @@ const handleSignin = async (
     const response = await axios.post(baseURL + "/signin", data, {
       withCredentials: true,
     });
+
+    document.cookie = `token=Bearer ${response.data}`;
     // setUserId(response.data);
     // let weekFromNow = new Date(Date.now() + 86400 * 1000 * 7);
     // weekFromNow = weekFromNow.toGMTString();

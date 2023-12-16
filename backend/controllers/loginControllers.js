@@ -37,10 +37,10 @@ exports.signup = async (req, res) => {
           { name: user.name, email: user.email, id: user._id },
           process.env.JWT_SECRET_KEY
         );
-        res.cookie("token", `Bearer ${token}`, {
-          expires: new Date(Date.now() + 84500 * 1000 * 7),
-        });
-        return res.status(200).json(user._id);
+        // res.cookie("token", `Bearer ${token}`, {
+        //   expires: new Date(Date.now() + 84500 * 1000 * 7),
+        // });
+        return res.status(200).json(token);
       }
     } catch (error) {
       console.error("Error during signup:", error);
@@ -82,11 +82,11 @@ exports.signin = async (req, res) => {
                 },
                 process.env.JWT_SECRET_KEY
               );
-              res.cookie("token", `Bearer ${token}`, {
-                expires: new Date(Date.now() + 84500 * 1000 * 7),
-              });
+              // res.cookie("token", `Bearer ${token}`, {
+              //   expires: new Date(Date.now() + 84500 * 1000 * 7),
+              // });
 
-              res.status(200).json(userData._id);
+              res.status(200).json(token);
             } else {
               res
                 .status(401)

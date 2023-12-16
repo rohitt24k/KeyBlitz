@@ -38,7 +38,7 @@ function Home({ userId, setUserId }) {
       const startIndex = Math.floor(Math.random() * (words.length - 50));
 
       // Extract a 50-word excerpt
-      const excerpt = words.slice(startIndex, startIndex + 50).join(" ");
+      const excerpt = words.slice(startIndex, startIndex + 5).join(" ");
 
       return excerpt;
     }
