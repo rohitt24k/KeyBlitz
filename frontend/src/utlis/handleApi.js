@@ -56,9 +56,13 @@ const handleSignin = async (
 
 const sendData = async (copyData) => {
   try {
-    const response = await axios.post(baseURL + "/userDataIn", copyData, {
-      withCredentials: true,
-    });
+    const response = await axios.post(
+      baseURL + "/userDataIn",
+      { data: copyData, token: document.cookie.split("=")[1] },
+      {
+        withCredentials: true,
+      }
+    );
   } catch (error) {
     console.log("There was an error sending Data", error.response);
   }

@@ -5,7 +5,7 @@ exports.handleUserDataInput = async (req, res) => {
   console.log("hy");
 
   try {
-    const token = req.cookies.token?.split(" ")[1];
+    const token = req.body.token?.split(" ")[1];
 
     if (!token) {
       return res.status(401).json({
@@ -16,7 +16,7 @@ exports.handleUserDataInput = async (req, res) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
-    const pushData = req.body;
+    const pushData = req.body.data;
     const findUser = await userDataModel.findOne({ email: decoded.email });
 
     if (findUser) {
