@@ -2,7 +2,6 @@ import { useState } from "react";
 import styles from "./typedText.module.css";
 
 function TypedText({ correct, incorrect }) {
-  console.log(`${correct}   ${incorrect}`);
   const [data, setData] = useState(correct);
 
   return (
@@ -18,7 +17,7 @@ function TypedText({ correct, incorrect }) {
       }}
     >
       {data.split("").map((c, i) => (
-        <span className={correct[i] === incorrect[i] ? "" : styles.err}>
+        <span className={correct[i] === incorrect[i] ? "" : styles.err} key={i}>
           {c}
         </span>
       ))}

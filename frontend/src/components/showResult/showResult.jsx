@@ -89,9 +89,12 @@ function ShowResult({
     [finalParagraph]
   );
 
+  // useEffect(() => {
+  // }, []);
   useEffect(() => {
+    console.log("tezttobe typed");
     sendData(copyData);
-  }, []);
+  }, [textToBeTyped]);
 
   return (
     <div className={styles.showResultContainer}>
@@ -118,7 +121,7 @@ function ShowResult({
         </main>
         <section>
           {correctText.map((c, i) => (
-            <TypedText correct={c} incorrect={incorrectText[i]} />
+            <TypedText correct={c} incorrect={incorrectText[i]} key={i} />
           ))}
         </section>
         <div className={styles.nextButton}>

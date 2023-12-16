@@ -31,6 +31,10 @@ function MainTyping({ textToBeTyped, setNext }) {
   const textData = textToBeTyped.split(" ");
 
   useEffect(() => {
+    console.log("tezttobe typed main");
+  }, [textToBeTyped]);
+
+  useEffect(() => {
     if (!isCompleted) {
       setTypeStart(false);
       setTimePassed(0);
@@ -49,7 +53,6 @@ function MainTyping({ textToBeTyped, setNext }) {
   useEffect(() => {
     // Focus on the input element when the component mounts
     inputElem.current?.focus();
-    console.log("hey");
   }, [textToBeTyped]);
 
   useEffect(() => {
@@ -254,6 +257,10 @@ function MainTyping({ textToBeTyped, setNext }) {
       setIsCompleted(true);
     }
   }, [userInput]);
+
+  // useEffect(() => {
+  //   console.log("mainTyping renders");
+  // }, []);
 
   return isCompleted ? (
     <ShowResult
