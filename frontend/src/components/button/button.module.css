@@ -1,0 +1,10 @@
+.buttonContainer button {
+  font-size: var(--body1);
+  background-color: var(--secondary-color);
+  color: var(--white);
+  border: none;
+  width: 100%;
+  padding: 0.6em 0;
+  border-radius: 50px;
+  cursor: pointer;
+}

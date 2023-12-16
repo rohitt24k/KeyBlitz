@@ -1,0 +1,27 @@
+/* .correct {
+  color: var(--primary-color);
+} */
+
+.typeLetterContainer {
+  position: relative;
+}
+
+.typeLetterContainer span,
+.typeLetterContainer_incorrect span {
+  color: var(--secondary-color);
+  letter-spacing: 2px;
+}
+
+/* .typeLetterContainer_incorrect::after {
+  content: "";
+  position: absolute;
+  background-color: red;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+}
+
+.iocorrect {
+  color: red;
+} */

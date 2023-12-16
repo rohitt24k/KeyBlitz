@@ -1,0 +1,114 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-size: 16px;
+  font-family: "Poppins", sans-serif;
+  /* font-family: "Abril Fatface", serif; */
+  /* font-family: 'Roboto Mono', monospace; */
+  min-height: 100vh;
+  background: rgb(16, 20, 24);
+  background: linear-gradient(
+    321deg,
+    rgba(16, 20, 24, 1) 16%,
+    rgb(12, 42, 72) 100%
+  );
+  color: var(--primary-color);
+  --body1: 1rem;
+  --body2: 0.875rem;
+}
+
+.light {
+  --background-color: #ffffff;
+  --primary-color: #101418;
+  --secondary-color: #444444;
+}
+
+.dark {
+  --background-color: #101418;
+  --primary-color: #ffffff;
+  --secondary-color: #444444;
+  --secondary-color-dark: #393939;
+  --error-color: #f44336;
+}
+
+h6,
+.h6 {
+  font-size: 1.25rem;
+  line-height: 160%;
+}
+
+h5,
+.h5 {
+  font-size: 1.5rem;
+  line-height: 133.4%;
+}
+h4,
+.h4 {
+  font-size: 2.125rem;
+  line-height: 123.5%;
+}
+h3 {
+  font-size: 3rem;
+  line-height: 116.7%;
+}
+h2 {
+  font-size: 3.75rem;
+  line-height: 120%;
+}
+h1 {
+  font-size: 6rem;
+  line-height: 116.7%;
+}
+
+/* .typeLetterContainer_incorrect::after {
+  content: "";
+  position: absolute;
+  background-color: red;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+}
+
+.iocorrect {
+  color: red;
+}
+
+.correct {
+  color: var(--primary-color);
+} */
+
+.wordError::after {
+  content: "";
+  position: absolute;
+  background-color: red;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+}
+
+.cursorActive {
+  position: absolute;
+  background-color: var(--primary-color);
+  height: 100%;
+  width: 2px;
+  border-radius: 2px;
+  animation: blink 1000ms ease 0s infinite none;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,58 @@
+.mainTypingContainer {
+  /* border: 1px solid white; */
+  height: 55vh;
+  width: 80vw;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.mainTypingContainer .blurText {
+  display: none;
+}
+.mainTypingContainer_blur .textContainer {
+  filter: blur(8.5px);
+}
+
+.mainTypingContainer_blur .blurText {
+  display: block;
+  position: relative;
+  top: 85px;
+  font-weight: 300;
+  letter-spacing: 4px;
+}
+
+.textContainer {
+  pointer-events: none;
+  font-family: "Roboto Mono", monospace;
+  display: flex;
+  gap: 11px;
+  flex-wrap: wrap;
+  position: relative;
+}
+
+.mainTypingContainer section {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 4rem;
+}
+
+.mainTypingContainer section span {
+  color: var(--secondary-color);
+  font-weight: 600;
+}
+
+.inputBox {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: transparent;
+  color: transparent;
+  border: none;
+  outline: none;
+  /* border: 2px solid white; */
+  cursor: pointer;
+  top: 0;
+}

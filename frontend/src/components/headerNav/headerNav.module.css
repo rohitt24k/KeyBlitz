@@ -1,0 +1,44 @@
+.headerNavContainer {
+  height: 12vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3.375rem 5.06rem;
+}
+
+.headerNavContainer .logo {
+  font-family: "Abril Fatface", serif;
+  letter-spacing: 2px;
+  text-shadow: 0 0 1rem rgb(255, 255, 255, 0.5),
+    0 0 1.5rem rgb(255, 255, 255, 0.65), 0 0 2.5rem #930bae, 0 0 4rem #930bae,
+    0 0 5.5em #930bae;
+  pointer-events: none;
+  user-select: none;
+}
+
+.headerNavContainer > div {
+  display: flex;
+  /* align-items: center; */
+  gap: 32px;
+}
+
+.headerNavContainer button {
+  border: none;
+  font-weight: 500;
+  border-radius: 8px;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  padding: 0 1.2em;
+  cursor: pointer;
+}
+
+.headerNavContainer button:hover {
+  background-color: var(--secondary-color-dark);
+}
+
+.headerNavContainer img {
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+}
