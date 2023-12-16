@@ -6,6 +6,7 @@ import styles from "./login.module.css";
 import { useNavigate } from "react-router-dom";
 import InputBox from "../../components/inputBox/inputBox";
 import Button from "../../components/button/button";
+import { handleSignin, handleSignup } from "../../utlis/handleApi";
 
 function Login({ userId, setUserId }) {
   const [isRegistered, setIsRegister] = useState(false);
@@ -37,23 +38,23 @@ function Login({ userId, setUserId }) {
   const handleSubmitButton = (e) => {
     e.preventDefault();
     if (!isRegistered && !isLoading) {
-      // handleSignup(
-      //   loginData.name,
-      //   loginData.email,
-      //   loginData.password,
-      //   setIsLoading,
-      //   setUserId,
-      //   navigate
-      // );
+      handleSignup(
+        loginData.name,
+        loginData.email,
+        loginData.password,
+        setIsLoading,
+        setUserId,
+        navigate
+      );
     }
     if (isRegistered && !isLoading) {
-      // handleSignin(
-      //   loginData.email,
-      //   loginData.password,
-      //   setIsLoading,
-      //   setUserId,
-      //   navigate
-      // );
+      handleSignin(
+        loginData.email,
+        loginData.password,
+        setIsLoading,
+        setUserId,
+        navigate
+      );
     }
   };
 

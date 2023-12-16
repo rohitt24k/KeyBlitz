@@ -31,6 +31,22 @@ function MainTyping({ textToBeTyped, setNext }) {
   const textData = textToBeTyped.split(" ");
 
   useEffect(() => {
+    if (!isCompleted) {
+      setTypeStart(false);
+      setTimePassed(0);
+      setTextIndex(0);
+      setUserInput("");
+      prevUserInputLen.current = null;
+      prevTextIndex.current = null;
+      incorrectWord.current = null;
+      typeSpeedData.current = [];
+      typeErrorData.current = [];
+      charErrorByUser.current = [];
+      finalParagraphTypedByUser.current = "";
+    }
+  }, [isCompleted]);
+
+  useEffect(() => {
     // Focus on the input element when the component mounts
     inputElem.current?.focus();
     console.log("hey");

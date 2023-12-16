@@ -13,8 +13,10 @@ const handleSignup = async (
   try {
     setIsLoading(true);
     const data = { name, email, password };
-    const response = await axios.post(baseURL + "/signup", data);
-    setUserId(response.data._id);
+    const response = await axios.post(baseURL + "/signup", data, {
+      withCredentials: true,
+    });
+    // setUserId(response.data);
     navigate("/");
   } catch (error) {
     console.log("There was an error during singup", error.response);
@@ -32,8 +34,13 @@ const handleSignin = async (
 ) => {
   try {
     const data = { email, password };
-    const response = await axios.post(baseURL + "/signin", data);
-    setUserId(response.data._id);
+    const response = await axios.post(baseURL + "/signin", data, {
+      withCredentials: true,
+    });
+    // setUserId(response.data);
+    // let weekFromNow = new Date(Date.now() + 86400 * 1000 * 7);
+    // weekFromNow = weekFromNow.toGMTString();
+    // document.cookie = `userID=${response.data}; expires= ${weekFromNow}`;
     navigate("/");
   } catch (error) {
     console.log("There was an error during signin", error.response);
@@ -42,4 +49,14 @@ const handleSignin = async (
   }
 };
 
-export { handleSignup, handleSignin };
+const sendData = async (copyData) => {
+  try {
+    const response = await axios.post(baseURL + "/userDataIn", copyData, {
+      withCredentials: true,
+    });
+  } catch (error) {
+    console.log("There was an error sending Data", error.response);
+  }
+};
+
+export { handleSignup, handleSignin, sendData };

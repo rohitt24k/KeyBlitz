@@ -1,7 +1,8 @@
 import styles from "./showResult.module.css";
 import ChartComponent from "../chart/chart";
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import TypedText from "./typedText/typedText";
+import { sendData } from "../../utlis/handleApi";
 
 function ShowResult({
   finalParagraph,
@@ -87,6 +88,10 @@ function ShowResult({
     () => finalParagraph.split(" "),
     [finalParagraph]
   );
+
+  useEffect(() => {
+    sendData(copyData);
+  }, []);
 
   return (
     <div className={styles.showResultContainer}>
