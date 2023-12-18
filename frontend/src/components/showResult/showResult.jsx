@@ -1,60 +1,36 @@
 import styles from "./showResult.module.css";
 import ChartComponent from "../chart/chart";
-import { useCallback, useEffect, useMemo } from "react";
+import { useContext, useMemo } from "react";
 import TypedText from "./typedText/typedText";
-import { sendData } from "../../utlis/handleApi";
+import textContext from "../../context/textContext";
 
-function ShowResult({
-  finalParagraph,
-  textToBeTyped,
-  typeSpeedData,
-  textData,
-  typeErrorData,
-  errors,
-  setNext,
-  setIsCompleted,
-}) {
-  // Function to calculate time differences for each word
-  function getTimeDifferences(timestamps, textData) {
-    const wordLenData = textData.map((w) => w.length);
+function ShowResult() {
+  const {
+    changeTextToBeTyped,
+    finalParagraphTypedByUser,
+    textToBeTyped,
+    typeSpeedData,
+    typeErrorData,
+    setIsCompleted,
+    getTimeDifferences,
+    wpm,
+  } = useContext(textContext);
 
-    // Calculate average word length
-    const averageWordLen =
-      wordLenData.reduce((a, b) => a + b, 0) / wordLenData.length;
+  const textData = textToBeTyped.split(" ");
 
-    const timeDifferences = [];
+  // function setClipboard(data) {
+  //   const jsonString = JSON.stringify(data);
+  //   const textToCopy = `JSON:${jsonString}`;
 
-    // Calculate time differences between consecutive words
-    for (let i = 0; i < timestamps.length - 1; i++) {
-      let diff = (timestamps[i + 1] - timestamps[i]) / 60000; // Convert to minutes
-      timeDifferences.push(diff.toFixed(2));
-    }
-
-    const eachWordSpeed = [];
-
-    // Calculate speed for each word
-    for (let i = 0; i < timeDifferences.length; i++) {
-      eachWordSpeed.push(
-        Math.round(wordLenData[i] / averageWordLen / timeDifferences[i])
-      );
-    }
-
-    return eachWordSpeed;
-  }
-
-  function setClipboard(data) {
-    const jsonString = JSON.stringify(data);
-    const textToCopy = `JSON:${jsonString}`;
-
-    navigator.clipboard.writeText(textToCopy).then(
-      () => {
-        console.log("Data successfully copied to clipboard!");
-      },
-      (error) => {
-        console.error("Unable to copy data to clipboard:", error);
-      }
-    );
-  }
+  //   navigator.clipboard.writeText(textToCopy).then(
+  //     () => {
+  //       console.log("Data successfully copied to clipboard!");
+  //     },
+  //     (error) => {
+  //       console.error("Unable to copy data to clipboard:", error);
+  //     }
+  //   );
+  // }
 
   // Function to calculate final WPM
   function calculateFinalWPM(timeStamps, textData, typeErrorData) {
@@ -65,41 +41,31 @@ function ShowResult({
     return Math.round((textData.length - errorCount) / totalTime);
   }
 
-  // Get the array of word speeds
-  const eachWordSpeed = getTimeDifferences(typeSpeedData.current, textData);
-  // console.log(eachWordSpeed);
-
   // Calculate final WPM
-  const finalWPM = calculateFinalWPM(
+  wpm.current = calculateFinalWPM(
     typeSpeedData.current,
     textData,
     typeErrorData
   );
 
-  const copyData = {
-    textToBeTyped,
-    errors,
-    finalParagraph,
-    wpm: finalWPM,
-  };
-
-  const correctText = useMemo(() => textToBeTyped.split(" "), [textToBeTyped]);
+  const correctText = useMemo(
+    () => textToBeTyped.trim().split(" "),
+    [textToBeTyped]
+  );
   const incorrectText = useMemo(
-    () => finalParagraph.split(" "),
-    [finalParagraph]
+    () => finalParagraphTypedByUser.current.trim().split(" "),
+    [finalParagraphTypedByUser.current]
   );
 
-  // useEffect(() => {
-  // }, []);
-  useEffect(() => {
-    console.log("tezttobe typed");
-    sendData(copyData);
-  }, [textToBeTyped]);
+  // console.log("to be typed final :", textToBeTyped);
 
+  // console.log("this is the final typed :", finalParagraphTypedByUser.current);
+
+  console.log("tezttobe typed normal");
   return (
     <div className={styles.showResultContainer}>
       <section className={styles.leftSide}>
-        <h1>{finalWPM}</h1>
+        <h1>{wpm.current}</h1>
         <p className="h4">wpm</p>
         <div>
           <h1>95</h1>
@@ -108,7 +74,6 @@ function ShowResult({
         <p
           className="h4"
           onClick={() => {
-            setClipboard(copyData);
             console.log("clicked");
           }}
         >
@@ -117,7 +82,9 @@ function ShowResult({
       </section>
       <div className={styles.rightSide}>
         <main>
-          <ChartComponent data={eachWordSpeed} />
+          <ChartComponent
+            data={getTimeDifferences(typeSpeedData.current, textData)}
+          />
         </main>
         <section>
           {correctText.map((c, i) => (
@@ -128,8 +95,8 @@ function ShowResult({
           <button
             className={`${styles.nextButton}`}
             onClick={() => {
-              setNext((prev) => !prev);
               setIsCompleted(false);
+              changeTextToBeTyped(10);
             }}
           >
             next

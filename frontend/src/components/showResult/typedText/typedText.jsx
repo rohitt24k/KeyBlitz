@@ -4,6 +4,8 @@ import styles from "./typedText.module.css";
 function TypedText({ correct, incorrect }) {
   const [data, setData] = useState(correct);
 
+  // console.log(`${correct}  ${incorrect}`);
+
   return (
     <div
       className={`${styles.typedTextContainer} ${
