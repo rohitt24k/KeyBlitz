@@ -1,5 +1,8 @@
 .homeContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.homeContainer main {
+  padding-top: 1rem;
 }

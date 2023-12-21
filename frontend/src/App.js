@@ -1,22 +1,36 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./page/home/home";
 import Login from "./page/login/login";
-import { useState } from "react";
-import { TextProvider } from "./context/textContext";
+import { useContext, useState } from "react";
+import textContext, { TextProvider } from "./context/textContext";
+import Online from "./page/online/online";
+import { UserProvider } from "./context/userCotext";
+import { SocketProvider } from "./context/socketContext";
+import ChallengeHome from "./page/challengeHome/challengeHome";
 
 function App() {
-  const [userId, setUserId] = useState(false);
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element=<TextProvider>
-            <Home userId={userId} setUserId={setUserId} />
-          </TextProvider>
-        />
-        <Route path="/login" element=<Login setUserId={setUserId} /> />
-      </Routes>
+      <UserProvider>
+        <TextProvider>
+          <Routes>
+            <Route path="/" element=<Home /> />
+            <Route path="/login" element=<Login /> />
+            <Route
+              path="/online"
+              element=<SocketProvider>
+                <Online />
+              </SocketProvider>
+            />
+            <Route
+              path="/challenge"
+              element=<SocketProvider>
+                <ChallengeHome />
+              </SocketProvider>
+            />
+          </Routes>
+        </TextProvider>
+      </UserProvider>
     </BrowserRouter>
   );
 }

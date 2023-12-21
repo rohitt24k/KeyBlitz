@@ -1,0 +1,9 @@
+.onlineResultContainer {
+}
+
+.normalResult {
+  padding: 0 8rem;
+  width: 70%;
+  padding-top: 1rem;
+  border: 1px solid red;
+}

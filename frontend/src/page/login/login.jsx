@@ -1,15 +1,13 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import styles from "./login.module.css";
-// import InputBox from "../../component/inputBox/inputBox";
-// import Button from "../../component/button/button";
-// import { handleSignin, handleSignup } from "../../utlis/handleApi";
 import { useNavigate } from "react-router-dom";
 import InputBox from "../../components/inputBox/inputBox";
 import Button from "../../components/button/button";
 import { handleSignin, handleSignup } from "../../utlis/handleApi";
+import userContext from "../../context/userCotext";
 
-function Login({ userId, setUserId }) {
-  const [isRegistered, setIsRegister] = useState(false);
+function Login() {
+  const [isRegistered, setIsRegister] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [loginData, setLoginData] = useState({
     name: "",
@@ -17,15 +15,7 @@ function Login({ userId, setUserId }) {
     password: "",
   });
 
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // Check if userId is already present (user is logged in)
-    if (userId) {
-      // Navigate to the home page
-      navigate("/");
-    }
-  }, [userId, navigate]);
+  const { handleSetUserToken } = useContext(userContext);
 
   const handleLoginDataChange = (e, text) => {
     const change = e.target.value;
@@ -42,9 +32,8 @@ function Login({ userId, setUserId }) {
         loginData.name,
         loginData.email,
         loginData.password,
-        setIsLoading,
-        setUserId,
-        navigate
+        handleSetUserToken,
+        setIsLoading
       );
     }
     if (isRegistered && !isLoading) {
@@ -52,8 +41,7 @@ function Login({ userId, setUserId }) {
         loginData.email,
         loginData.password,
         setIsLoading,
-        setUserId,
-        navigate
+        handleSetUserToken
       );
     }
   };

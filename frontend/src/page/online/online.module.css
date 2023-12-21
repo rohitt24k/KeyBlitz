@@ -1,0 +1,81 @@
+.onlineContainer {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  flex: 1;
+  display: flex;
+  gap: 80px;
+  justify-content: center;
+  align-items: center;
+}
+
+.main .leftSection {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.main .leftSection input {
+  background-color: transparent;
+  color: var(--primary-color);
+  text-align: center;
+  outline: none;
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  box-shadow: inset 0px 0px 2px 1px rgba(255, 255, 255, 0.63);
+}
+
+.main .leftSection input:hover {
+  box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 1);
+}
+
+.main .rightSection {
+  /* border: 1px solid white; */
+  width: 350px;
+}
+
+.rightSection p {
+  /* border: 1px solid white; */
+  text-align: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgb(255, 255, 255, 0.63);
+  pointer-events: none;
+}
+
+.rightSection .playerContainerDiv {
+  height: 200px;
+  overflow: auto;
+}
+
+.rightSection .playerContainer {
+  padding: 0.3rem 0;
+  cursor: pointer;
+  text-align: center;
+  /* border: 1px solid white; */
+  border-radius: 8px;
+}
+
+.rightSection .playerContainer:hover {
+  box-shadow: inset 0px 0px 8px 0px rgb(255, 255, 255, 0.3);
+}
+
+.rightSection button {
+  width: 100%;
+  padding: 0.3rem 0;
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  font-size: var(--body1);
+  margin-top: 0.5rem;
+  background-color: rgb(255, 255, 255, 0.63);
+  cursor: pointer;
+}
+
+.rightSection button:hover {
+  background-color: rgb(255, 255, 255, 0.7);
+  box-shadow: 0 0 8px 0 rgb(255, 255, 255, 0.63);
+}

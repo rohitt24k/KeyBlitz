@@ -6,8 +6,7 @@ import { useNavigate } from "react-router-dom";
 import textContext from "../../context/textContext";
 import ShowResult from "../../components/showResult/showResult";
 
-function Home({ userId, setUserId }) {
-  const navigate = useNavigate();
+function Home() {
   const { isCompleted } = useContext(textContext);
 
   // useEffect(() => {
@@ -28,7 +27,7 @@ function Home({ userId, setUserId }) {
   return (
     <div className={styles.homeContainer}>
       <HeaderNav />
-      {isCompleted ? <ShowResult /> : <MainTyping />}
+      <main>{isCompleted ? <ShowResult /> : <MainTyping />}</main>
     </div>
   );
 }

@@ -1,10 +1,9 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import styles from "./mainTyping.module.css";
 import TypeLetter from "../typeLetter/typeLetter";
-import ShowResult from "../showResult/showResult";
 import textContext from "../../context/textContext";
 
-function MainTyping({ setNext }) {
+function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
   const {
     textToBeTyped,
     typeSpeedData,
@@ -14,13 +13,14 @@ function MainTyping({ setNext }) {
     timePassed,
     setTimePassed,
     setIsCompleted,
+    isOnline,
   } = useContext(textContext);
 
   //declaring stated
   const [userInput, setUserInput] = useState("");
-  const [textIndex, setTextIndex] = useState(0);
   const [isBlur, setIsBlur] = useState(false);
   const [typeStart, setTypeStart] = useState(false);
+  const [textIndex, setTextIndex] = useState(0);
 
   //declaring reference
   const prevUserInputLen = useRef(0); // to store previous input for finding whether BACKSPACE is clicked or not
@@ -28,6 +28,7 @@ function MainTyping({ setNext }) {
   const inputElem = useRef(null); // reference to the input BOX
   const elem = useRef(null); // for the div that contains all the word
   const isBackspace = useRef(false);
+  const noBackspace = useRef(false);
 
   const textData = textToBeTyped.split(" ");
 
@@ -46,6 +47,22 @@ function MainTyping({ setNext }) {
   //     finalParagraphTypedByUser.current = "";
   //   }
   // }, [isCompleted]);
+
+  // for online match
+  useEffect(() => {
+    if (isOnline && textIndex !== 0) {
+      //push to room when textIndex is changed
+      handleTextIndexChange(textIndex);
+      handleOwnCarMove(textIndex);
+    }
+  }, [textIndex]);
+
+  useEffect(() => {
+    //resetting when the text is changed
+    setUserInput("");
+    setTypeStart(false);
+    setTextIndex(0);
+  }, [textToBeTyped]);
 
   useEffect(() => {
     // Focus on the input element when the component mounts
@@ -107,6 +124,8 @@ function MainTyping({ setNext }) {
       finalParagraphTypedByUser.current =
         finalParagraphTypedByUser.current.split(" ").slice(0, -2).join(" ") +
         " ";
+      noBackspace.current = true;
+      typeErrorData.current.pop();
       // console.log(finalParagraphTypedByUser.current);
     }
   }
@@ -212,6 +231,21 @@ function MainTyping({ setNext }) {
                 finalParagraphTypedByUser.current + userInput;
 
               typeSpeedData.current.push(Date.now());
+
+              let DOMcharTypedDiv = elem.current.children[textIndex];
+              let containsError = 0;
+              Array.from(DOMcharTypedDiv.children).forEach((c) => {
+                if (
+                  c.classList.contains("e") ||
+                  c.classList.contains("error") ||
+                  c.classList.contains("n")
+                ) {
+                  containsError++;
+                }
+              });
+
+              typeErrorData.current.push(containsError);
+
               setTypeStart(false);
               setIsCompleted(true);
             }
@@ -282,6 +316,8 @@ function MainTyping({ setNext }) {
           onKeyDown={(e) => {
             if (e.key === "Backspace" && userInput === "") {
               // isBackspace.current = true;
+              // console.log("empty backspace is clicked");
+
               handleEmptyBackspace();
             }
             // if ((e.ctrlKey || e.metaKey) && e.key === "Backspace") {
@@ -304,7 +340,7 @@ function MainTyping({ setNext }) {
                 setTypeStart(true);
                 typeSpeedData.current.push(Date.now());
               }
-              if (e.nativeEvent.data === " " && userInput === "") {
+              if (e.nativeEvent.data === " " && e.target.value === "") {
                 // Do nothing
               } else if (e.nativeEvent.data === " ") {
                 //space is being clicked
@@ -341,15 +377,18 @@ function MainTyping({ setNext }) {
             } else if (prevUserInputLen.current > e.target.value.length) {
               //userInput length has decreased || backspace is being clicked
               // console.log("userInput length has decreased");
-              if (e.target.value === "") {
-                // isBackspace.current = true;
-                handleCtrlBackspace();
-                // console.log("CTRL + backspace is clicked");
-              } else {
-                // console.log("Backspace");
-                handleBackspace();
+              if (!noBackspace.current) {
+                if (e.target.value === "") {
+                  // isBackspace.current = true;
+                  handleCtrlBackspace();
+                  // console.log("CTRL + backspace is clicked");
+                } else {
+                  // console.log("Backspace");
+                  handleBackspace();
+                }
+                setUserInput(e.target.value);
               }
-              setUserInput(e.target.value);
+              noBackspace.current = false;
             }
           }}
         />

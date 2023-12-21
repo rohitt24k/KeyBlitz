@@ -2,14 +2,14 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
 }
 
 body {
   font-size: 16px;
-  font-family: "Poppins", sans-serif;
   /* font-family: "Abril Fatface", serif; */
   /* font-family: 'Roboto Mono', monospace; */
-  min-height: 100vh;
+  height: 100vh;
   background: rgb(16, 20, 24);
   background: linear-gradient(
     321deg,

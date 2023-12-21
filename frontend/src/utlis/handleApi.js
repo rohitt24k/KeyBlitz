@@ -1,15 +1,14 @@
 import axios from "axios";
 
-const baseURL = "http://localhost:3001/api";
-// const baseURL = "https://keyblitzapi.onrender.com/api";
+// const baseURL = "http://192.168.1.70:3001/api";
+const baseURL = "https://keyblitzapi.onrender.com/api";
 
 const handleSignup = async (
   name,
   email,
   password,
   setIsLoading,
-  setUserId,
-  navigate
+  handleSetUserToken
 ) => {
   try {
     setIsLoading(true);
@@ -19,8 +18,7 @@ const handleSignup = async (
     });
 
     document.cookie = `token=Bearer ${response.data}`;
-    // setUserId(response.data);
-    navigate("/");
+    handleSetUserToken(response.data);
   } catch (error) {
     console.log("There was an error during singup", error.response);
   } finally {
@@ -32,8 +30,8 @@ const handleSignin = async (
   email,
   password,
   setIsLoading,
-  setUserId,
-  navigate
+
+  handleSetUserToken
 ) => {
   try {
     const data = { email, password };
@@ -42,11 +40,7 @@ const handleSignin = async (
     });
 
     document.cookie = `token=Bearer ${response.data}`;
-    // setUserId(response.data);
-    // let weekFromNow = new Date(Date.now() + 86400 * 1000 * 7);
-    // weekFromNow = weekFromNow.toGMTString();
-    // document.cookie = `userID=${response.data}; expires= ${weekFromNow}`;
-    navigate("/");
+    handleSetUserToken(response.data);
   } catch (error) {
     console.log("There was an error during signin", error.response);
   } finally {

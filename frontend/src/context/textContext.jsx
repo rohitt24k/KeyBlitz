@@ -9,10 +9,12 @@ export function TextProvider({ children }) {
 
   //all the states
   const [textToBeTyped, setTextToBeTyped] = useState(
-    getRandomParagraph(data, 10)
+    getRandomParagraph(data, 50)
   );
   const [isCompleted, setIsCompleted] = useState(false);
   const [timePassed, setTimePassed] = useState(0);
+
+  const [isOnline, setIsOnline] = useState(false);
 
   //all the useEffects
   const typeSpeedData = useRef([]);
@@ -58,6 +60,10 @@ export function TextProvider({ children }) {
       timeDifferences.push(diff.toFixed(2));
     }
 
+    console.log("averagelen: ", averageWordLen);
+
+    console.log(timeDifferences);
+
     const eachWordSpeed = [];
 
     // Calculate speed for each word
@@ -69,6 +75,20 @@ export function TextProvider({ children }) {
 
     return eachWordSpeed;
   }
+
+  useEffect(() => {
+    //setting back , resetting
+
+    setTimePassed(0);
+    typeSpeedData.current = [];
+    typeErrorData.current = [];
+    charErrorByUser.current = [];
+    finalParagraphTypedByUser.current = [];
+    setTimePassed(0);
+    setIsCompleted(false);
+    wpm.current = 0;
+  }, [textToBeTyped]);
+
   useEffect(() => {
     if (isCompleted) {
       const copyData = {
@@ -78,15 +98,7 @@ export function TextProvider({ children }) {
         wpm: wpm.current,
       };
       sendData(copyData);
-    } else {
-      //setting back , resetting
-
-      setTimePassed(0);
-      typeSpeedData.current = [];
-      typeErrorData.current = [];
-      charErrorByUser.current = [];
-      finalParagraphTypedByUser.current = [];
-      wpm.current = 0;
+      console.log(typeErrorData);
     }
   }, [isCompleted]);
 
@@ -104,7 +116,10 @@ export function TextProvider({ children }) {
         isCompleted,
         setIsCompleted,
         getTimeDifferences,
+        setTextToBeTyped,
         wpm,
+        isOnline,
+        setIsOnline,
       }}
     >
       {children}

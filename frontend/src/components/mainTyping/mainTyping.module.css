@@ -1,14 +1,9 @@
 .mainTypingContainer {
-  /* border: 1px solid white; */
-  height: 55vh;
-  width: 80vw;
+  width: 100%;
+  padding: 4rem 10rem;
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   margin-top: 2rem;
 }
-
 .mainTypingContainer .blurText {
   display: none;
 }
@@ -28,6 +23,7 @@
   pointer-events: none;
   font-family: "Roboto Mono", monospace;
   display: flex;
+  justify-content: center;
   gap: 11px;
   flex-wrap: wrap;
   position: relative;
@@ -45,14 +41,14 @@
 }
 
 .inputBox {
+  position: absolute;
   width: 100%;
   height: 100%;
-  position: absolute;
   background-color: transparent;
   color: transparent;
   border: none;
   outline: none;
-  /* border: 2px solid white; */
   cursor: pointer;
   top: 0;
+  left: 0;
 }

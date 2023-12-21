@@ -42,6 +42,7 @@ function ShowResult() {
   }
 
   // Calculate final WPM
+
   wpm.current = calculateFinalWPM(
     typeSpeedData.current,
     textData,
@@ -96,7 +97,7 @@ function ShowResult() {
             className={`${styles.nextButton}`}
             onClick={() => {
               setIsCompleted(false);
-              changeTextToBeTyped(10);
+              changeTextToBeTyped(50);
             }}
           >
             next

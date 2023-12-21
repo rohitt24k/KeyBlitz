@@ -8,6 +8,7 @@
 
 .typeLetterContainer span,
 .typeLetterContainer_incorrect span {
+  font-family: "Roboto Mono", monospace;
   color: var(--secondary-color);
   letter-spacing: 2px;
 }

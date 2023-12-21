@@ -1,0 +1,33 @@
+.challengeContainer {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* border: 1px solid white; */
+}
+
+.challengeContainer .topSection {
+  position: relative;
+  margin-top: 5rem;
+}
+
+.track svg {
+  height: 250px;
+  opacity: 0.6;
+}
+
+.car svg {
+  position: absolute;
+  /* opacity:; */
+}
+
+.car svg:nth-child(1) {
+  top: 0;
+  left: 14%;
+  /* left: 70%; */
+}
+.car svg:nth-child(2) {
+  top: 50%;
+  left: 9%;
+  /* left: 72%; */
+}
