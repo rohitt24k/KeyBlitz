@@ -7,6 +7,7 @@ import Online from "./page/online/online";
 import { UserProvider } from "./context/userCotext";
 import { SocketProvider } from "./context/socketContext";
 import ChallengeHome from "./page/challengeHome/challengeHome";
+import Friends from "./page/friends/friends";
 
 function App() {
   return (
@@ -26,6 +27,12 @@ function App() {
               path="/challenge"
               element=<SocketProvider>
                 <ChallengeHome />
+              </SocketProvider>
+            />
+            <Route
+              path="/friends"
+              element=<SocketProvider>
+                <Friends />
               </SocketProvider>
             />
           </Routes>

@@ -1,6 +1,13 @@
 import { sendData } from "../utlis/handleApi";
+import userContext from "./userCotext";
 
-const { createContext, useState, useRef, useEffect } = require("react");
+const {
+  createContext,
+  useState,
+  useRef,
+  useEffect,
+  useContext,
+} = require("react");
 
 const textContext = createContext();
 
@@ -9,13 +16,14 @@ export function TextProvider({ children }) {
 
   //all the states
   const [textToBeTyped, setTextToBeTyped] = useState(
-    getRandomParagraph(data, 50)
+    getRandomParagraph(data, 5)
   );
   const [isCompleted, setIsCompleted] = useState(false);
   const [timePassed, setTimePassed] = useState(0);
 
   const [isOnline, setIsOnline] = useState(false);
 
+  const { token } = useContext(userContext);
   //all the useEffects
   const typeSpeedData = useRef([]);
   const typeErrorData = useRef([]);
@@ -60,9 +68,9 @@ export function TextProvider({ children }) {
       timeDifferences.push(diff.toFixed(2));
     }
 
-    console.log("averagelen: ", averageWordLen);
+    // console.log("averagelen: ", averageWordLen);
 
-    console.log(timeDifferences);
+    // console.log(timeDifferences);
 
     const eachWordSpeed = [];
 
@@ -97,8 +105,8 @@ export function TextProvider({ children }) {
         finalParagraphTypedByUser: finalParagraphTypedByUser.current,
         wpm: wpm.current,
       };
-      sendData(copyData);
-      console.log(typeErrorData);
+      sendData(copyData, token);
+      // console.log(typeErrorData);
     }
   }, [isCompleted]);
 

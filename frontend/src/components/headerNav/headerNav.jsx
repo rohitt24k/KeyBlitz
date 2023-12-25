@@ -7,7 +7,7 @@ function HeaderNav() {
       <div>
         <button className="h6">Friends</button>
         <div className={styles.avatar}>
-          <img src="./images/1.png" alt="User Avatar" />
+          <img src="./images/avatar/1.png" alt="User Avatar" />
         </div>
       </div>
     </div>

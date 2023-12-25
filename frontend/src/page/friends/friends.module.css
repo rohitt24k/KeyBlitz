@@ -1,0 +1,159 @@
+.friendsContainer {
+  height: 100vh;
+}
+
+.friendsListContainer {
+  height: 75%;
+  margin: 1rem 10rem 0 10rem;
+  box-shadow: 0 0 8px 2px rgb(255, 255, 255, 0.5);
+  border-radius: 12px;
+  background-color: rgb(16, 20, 24, 0.65);
+  overflow: hidden;
+}
+
+.friendsListContainer > nav {
+  display: flex;
+  gap: 1rem;
+  height: 8%;
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid rgb(255, 255, 255, 0.5);
+}
+
+.friendsListContainer > nav li {
+  list-style: none;
+  color: var(--secondary-color);
+  font-weight: 600;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.friendsListContainer > nav li:hover {
+  color: var(--primary-color);
+}
+
+.friendsListContainer > main {
+  display: flex;
+  height: 92%;
+}
+
+.leftSection {
+  width: 22%;
+  /* border: 1px solid black; */
+  /* height: 100%; */
+}
+
+.leftSection .inputContainer {
+  padding: 1rem;
+  border-bottom: 1px solid rgb(255, 255, 255, 0.4);
+}
+
+.leftSection input {
+  border: none;
+  outline: none;
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  padding: 0.3rem 0.5rem;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.friendListCard {
+  padding: 0.5rem;
+}
+
+.friendList {
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px;
+  background-color: rgb(69, 69, 69, 0.5);
+}
+
+.friendList > img {
+  width: 2rem;
+  height: 2rem;
+}
+
+.rightSection {
+  background-color: rgb(255, 255, 255, 0.15);
+  flex: 1;
+  /* height: 100%; */
+}
+
+.rightSection .messagesContainer {
+  height: 85%;
+  overflow: auto;
+}
+
+.rightSection .messagesContainer::-webkit-scrollbar {
+  width: 5px;
+}
+.rightSection .messagesContainer::-webkit-scrollbar-thumb {
+  background-color: rgb(255, 255, 255, 0.25);
+  border-radius: 8px;
+}
+
+.rightSection > footer {
+  padding: 1rem;
+  height: 15%;
+  border-top: 1px solid rgb(255, 255, 255, 0.4);
+  display: flex;
+}
+
+.rightSection > footer button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: none;
+  background-color: rgb(16, 20, 24, 0.65);
+  color: var(--primary-color);
+}
+
+.rightSection > footer button:hover {
+  box-shadow: 0 0 3px 1px rgb(255, 255, 255, 0.3);
+}
+
+.rightSection > footer form {
+  flex: 1;
+  margin-left: 1rem;
+  display: flex;
+}
+
+.rightSection > footer input {
+  flex: 1;
+  margin-right: 1rem;
+  border-radius: 8px;
+  height: 100%;
+  padding: 0 1rem;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  box-shadow: 0 0 1px 1px rgb(255, 255, 255, 0.65);
+  color: var(--primary-color);
+  font-size: var(--body1);
+}
+
+.rightSection .messagesContainer {
+  position: relative;
+  padding: 1rem 4rem;
+}
+
+.message {
+  padding: 0.2rem 0.6rem;
+  /* border: 1px solid white; */
+  width: fit-content;
+  border-radius: 8px 8px 8px 0;
+  background-color: rgb(255, 255, 255, 0.8);
+  color: var(--background-color);
+}
+
+.own {
+  border-radius: 8px 8px 0 8px;
+  margin-left: auto;
+  background-color: rgb(69, 69, 69);
+  box-shadow: 0 0 1px 0.5px rgb(255, 255, 255);
+  color: var(--primary-color);
+}

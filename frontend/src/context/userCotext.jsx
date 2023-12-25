@@ -6,18 +6,25 @@ const userContext = createContext();
 export function UserProvider({ children }) {
   const navigate = useNavigate();
   const [token, setToken] = useState("");
+  const [userId, setUserId] = useState("");
   const oneTime = useRef(0);
 
   if (oneTime.current === 0) {
     oneTime.current = 1;
-    const cookie = document.cookie.split("=");
-    if (cookie[0] === "token") {
-      setToken(cookie[1].split(" ")[1]);
+    const cookie = document.cookie.split("; ");
+    if (cookie.length === 2) {
+      if (cookie[0].split("=")[0] === "userId") {
+        setUserId(cookie[0].split("=")[1]);
+        setToken(cookie[1].split("=")[1]);
+      } else {
+        setUserId(cookie[1].split("=")[1]);
+        setToken(cookie[0].split("=")[1]);
+      }
     }
   }
   useEffect(() => {
-    const cookie = document.cookie.split("=");
-    if (cookie[0] !== "token") {
+    const cookie = document.cookie.split("; ");
+    if (cookie.length !== 2) {
       navigate("/login");
     }
   }, []);
@@ -28,7 +35,9 @@ export function UserProvider({ children }) {
   }
 
   return (
-    <userContext.Provider value={{ token, handleSetUserToken }}>
+    <userContext.Provider
+      value={{ token, handleSetUserToken, userId, setUserId }}
+    >
       {children}
     </userContext.Provider>
   );

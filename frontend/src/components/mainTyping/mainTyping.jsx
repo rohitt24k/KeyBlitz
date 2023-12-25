@@ -24,29 +24,12 @@ function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
 
   //declaring reference
   const prevUserInputLen = useRef(0); // to store previous input for finding whether BACKSPACE is clicked or not
-  const prevTextIndex = useRef(null); // to store previous index
   const inputElem = useRef(null); // reference to the input BOX
   const elem = useRef(null); // for the div that contains all the word
   const isBackspace = useRef(false);
   const noBackspace = useRef(false);
 
   const textData = textToBeTyped.split(" ");
-
-  // useEffect(() => {
-  //   if (!isCompleted) {
-  //     setTypeStart(false);
-  //     setTimePassed(0);
-  //     setTextIndex(0);
-  //     setUserInput("");
-  //     prevUserInputLen.current = null;
-  //     prevTextIndex.current = null;
-  //     incorrectWord.current = null;
-  //     typeSpeedData.current = [];
-  //     typeErrorData.current = [];
-  //     charErrorByUser.current = [];
-  //     finalParagraphTypedByUser.current = "";
-  //   }
-  // }, [isCompleted]);
 
   // for online match
   useEffect(() => {
@@ -114,16 +97,18 @@ function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
 
     if (textIndex > 0 && typeErrorData.current[textIndex - 1] !== 0) {
       setTextIndex(textIndex - 1);
-      const prevInput =
-        finalParagraphTypedByUser.current.split(" ")[textIndex - 1];
+      const prevInput = finalParagraphTypedByUser.current.pop();
+      // const prevInput =
+      //   finalParagraphTypedByUser.current.split(" ")[textIndex - 1];
       setUserInput(prevInput);
-      // console.log(`${prevInput.length}  ${prevInput}`);
+      // console.log(`empty space`, { userInput, prevInput });
 
       let DOMcharTypedDiv = elem.current.children[textIndex - 1];
       DOMcharTypedDiv.classList?.remove("wordError");
-      finalParagraphTypedByUser.current =
-        finalParagraphTypedByUser.current.split(" ").slice(0, -2).join(" ") +
-        " ";
+
+      // finalParagraphTypedByUser.current =
+      //   finalParagraphTypedByUser.current.split(" ").slice(0, -2).join(" ") +
+      //   " ";
       noBackspace.current = true;
       typeErrorData.current.pop();
       // console.log(finalParagraphTypedByUser.current);
@@ -161,6 +146,7 @@ function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
     // console.log(DOMcharTypedDiv);
 
     // console.log(DOMcharTyped);
+    // console.log({ userInput, error: typeErrorData.current });
 
     if (DOMcharTyped?.classList.contains("error")) {
       DOMcharTypedDiv.removeChild(DOMcharTyped);
@@ -227,8 +213,7 @@ function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
               Array.from(DOMcharTypedDiv.querySelectorAll("span")).length ===
                 userInput.length
             ) {
-              finalParagraphTypedByUser.current =
-                finalParagraphTypedByUser.current + userInput;
+              finalParagraphTypedByUser.current.push(userInput);
 
               typeSpeedData.current.push(Date.now());
 
@@ -315,15 +300,9 @@ function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
           }}
           onKeyDown={(e) => {
             if (e.key === "Backspace" && userInput === "") {
-              // isBackspace.current = true;
               // console.log("empty backspace is clicked");
-
               handleEmptyBackspace();
             }
-            // if ((e.ctrlKey || e.metaKey) && e.key === "Backspace") {
-            //   handleCtrlBackspace();
-            //   console.log("whatttt");
-            // }
           }}
           onBlur={(e) => {
             setIsBlur(true);
@@ -362,8 +341,11 @@ function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
                   DOMcharTypedDiv.classList.add("wordError");
                 }
 
-                finalParagraphTypedByUser.current =
-                  finalParagraphTypedByUser.current + userInput + " ";
+                finalParagraphTypedByUser.current.push(userInput);
+                // console.log(finalParagraphTypedByUser.current);
+
+                // finalParagraphTypedByUser.current =
+                //   finalParagraphTypedByUser.current + userInput + " ";
                 setTextIndex(textIndex + 1);
 
                 // console.log(finalParagraphTypedByUser.current);

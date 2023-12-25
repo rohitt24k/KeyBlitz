@@ -22,10 +22,11 @@ function getRandomParagraph(longParagraph, length) {
 }
 
 function initializeSocket(server) {
-  let onlineUsers = [];
+  let onlineUsers = {};
   const rooms = {};
   const io = new Server(server, {
     cors: {
+      // origin: "http://192.168.1.70:3000",
       origin: "https://keyblitz.vercel.app",
       methods: ["GET", "POST"],
     },
@@ -35,7 +36,17 @@ function initializeSocket(server) {
     socket.on("disconnect", () => {
       console.log("user Disconnected:", socket.id);
 
-      onlineUsers = onlineUsers.filter((d) => d.socketId !== socket.id);
+      // onlineUsers = onlineUsers.filter((d) => d.socketId !== socket.id);
+
+      const userIdToRemove = Object.keys(onlineUsers).find(
+        (userId) => onlineUsers[userId].socketId === socket.id
+      );
+
+      // Check if a user was found
+      if (userIdToRemove) {
+        // Remove the user from the onlineUsers object
+        delete onlineUsers[userIdToRemove];
+      }
 
       Object.values(rooms).forEach((room) => {
         delete room.players[socket.id];
@@ -43,16 +54,15 @@ function initializeSocket(server) {
       });
     });
     socket.on("addNewUser", (token) => {
-      console.log(token);
+      token = token.token.split(" ")[1];
 
-      const content = jwt.verify(token.token, process.env.JWT_SECRET_KEY);
-      console.log(content);
-      onlineUsers.push({
+      const content = jwt.verify(token, process.env.JWT_SECRET_KEY);
+      onlineUsers[content.id] = {
         name: content.name,
         email: content.email,
         userId: content.id,
         socketId: socket.id,
-      });
+      };
       io.emit("users", onlineUsers);
     });
 
@@ -95,6 +105,22 @@ function initializeSocket(server) {
     socket.on("finishResult", ({ wpm, roomName }) => {
       rooms[roomName].players[socket.id].wpm = wpm.current;
       io.to(roomName).emit("finishResult", rooms[roomName].players);
+    });
+
+    socket.on("addMessage", ({ data, conversationId, friendId }) => {
+      console.log("message sent to user: " + friendId);
+      if (onlineUsers[friendId]) {
+        io.to(onlineUsers[friendId].socketId).emit("addMessage", {
+          data,
+          conversationId,
+        });
+      } else {
+        console.log("the user is not online");
+      }
+
+      // console.log("data: " + data);
+      // console.log("conversationId wowowow: " + conversationId);
+      // socket.emit("addMessage", { data, conversationId });
     });
   });
 

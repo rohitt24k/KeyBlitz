@@ -24,7 +24,7 @@ exports.signup = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         const newUser = new authModel({
-          name,
+          name: name.toLowerCase(),
           email,
           password: hashedPassword,
         });
@@ -40,7 +40,7 @@ exports.signup = async (req, res) => {
         // res.cookie("token", `Bearer ${token}`, {
         //   expires: new Date(Date.now() + 84500 * 1000 * 7),
         // });
-        return res.status(200).json(token);
+        return res.status(200).json({ token, id: user._id });
       }
     } catch (error) {
       console.error("Error during signup:", error);
@@ -86,7 +86,7 @@ exports.signin = async (req, res) => {
               //   expires: new Date(Date.now() + 84500 * 1000 * 7),
               // });
 
-              res.status(200).json(token);
+              res.status(200).json({ token, id: userData._id });
             } else {
               res
                 .status(401)

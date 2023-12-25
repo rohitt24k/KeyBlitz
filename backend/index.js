@@ -6,6 +6,7 @@ require("dotenv").config();
 const connect = require("./db/connect");
 const loginRoute = require("./router/loginRoute");
 const userDataRoute = require("./router/userDataRoute");
+const convRoute = require("./router/convRoute");
 let cookies = require("cookie-parser");
 const sockets = require("./sockets/index");
 
@@ -31,6 +32,7 @@ const io = sockets.initializeSocket(server);
 
 app.use("/api", userDataRoute);
 app.use("/api", loginRoute);
+app.use("/api", convRoute);
 
 server.listen(process.env.PORT, () => {
   console.log("the server is running at port 3001");

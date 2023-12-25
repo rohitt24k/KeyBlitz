@@ -15,7 +15,9 @@ function Login() {
     password: "",
   });
 
-  const { handleSetUserToken } = useContext(userContext);
+  const { handleSetUserToken, setUserId } = useContext(userContext);
+
+  // const {  } = useContext(userContext);
 
   const handleLoginDataChange = (e, text) => {
     const change = e.target.value;
@@ -33,7 +35,8 @@ function Login() {
         loginData.email,
         loginData.password,
         handleSetUserToken,
-        setIsLoading
+        setIsLoading,
+        setUserId
       );
     }
     if (isRegistered && !isLoading) {
@@ -41,7 +44,8 @@ function Login() {
         loginData.email,
         loginData.password,
         setIsLoading,
-        handleSetUserToken
+        handleSetUserToken,
+        setUserId
       );
     }
   };

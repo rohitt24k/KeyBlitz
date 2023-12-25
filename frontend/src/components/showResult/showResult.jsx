@@ -14,6 +14,7 @@ function ShowResult() {
     setIsCompleted,
     getTimeDifferences,
     wpm,
+    isOnline,
   } = useContext(textContext);
 
   const textData = textToBeTyped.split(" ");
@@ -53,16 +54,16 @@ function ShowResult() {
     () => textToBeTyped.trim().split(" "),
     [textToBeTyped]
   );
-  const incorrectText = useMemo(
-    () => finalParagraphTypedByUser.current.trim().split(" "),
-    [finalParagraphTypedByUser.current]
-  );
+  // const incorrectText = useMemo(
+  //   () => finalParagraphTypedByUser.current.trim().split(" "),
+  //   [finalParagraphTypedByUser.current]
+  // );
 
   // console.log("to be typed final :", textToBeTyped);
 
   // console.log("this is the final typed :", finalParagraphTypedByUser.current);
 
-  console.log("tezttobe typed normal");
+  // console.log("tezttobe typed normal");
   return (
     <div className={styles.showResultContainer}>
       <section className={styles.leftSide}>
@@ -72,14 +73,7 @@ function ShowResult() {
           <h1>95</h1>
           <p className="h4">%</p>
         </div>
-        <p
-          className="h4"
-          onClick={() => {
-            console.log("clicked");
-          }}
-        >
-          acc.
-        </p>
+        <p className="h4">acc.</p>
       </section>
       <div className={styles.rightSide}>
         <main>
@@ -89,20 +83,26 @@ function ShowResult() {
         </main>
         <section>
           {correctText.map((c, i) => (
-            <TypedText correct={c} incorrect={incorrectText[i]} key={i} />
+            <TypedText
+              correct={c}
+              incorrect={finalParagraphTypedByUser.current[i]}
+              key={i}
+            />
           ))}
         </section>
-        <div className={styles.nextButton}>
-          <button
-            className={`${styles.nextButton}`}
-            onClick={() => {
-              setIsCompleted(false);
-              changeTextToBeTyped(50);
-            }}
-          >
-            next
-          </button>
-        </div>
+        {!isOnline && (
+          <div className={styles.nextButton}>
+            <button
+              className={`${styles.nextButton}`}
+              onClick={() => {
+                setIsCompleted(false);
+                changeTextToBeTyped(50);
+              }}
+            >
+              next
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
