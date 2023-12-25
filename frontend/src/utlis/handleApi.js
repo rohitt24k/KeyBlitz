@@ -92,14 +92,32 @@ const searchUser = async (searchKeyword, setFriendsList) => {
 
 const createConversation = async (
   receiverDetails,
-  setConversationId,
+  conversationsList,
+  setConversationsList,
+  setConersationSelectedIndex,
+  setNonFriend,
   token
 ) => {
-  const response = await axios.post(baseURL + "/createConversation", {
-    receiverDetails,
-    token,
-  });
-  setConversationId(response.data.data._id);
+  const index = conversationsList.findIndex((c) =>
+    c.users.find((d) => d.userId === receiverDetails.userId)
+  );
+  if (index === -1) {
+    //not present so create a conversation
+    const response = await axios.post(baseURL + "/createConversation", {
+      receiverDetails,
+      token,
+    });
+    // console.log(response.data.data);
+    setConversationsList((prev) => [...prev, response.data.data]);
+    setConersationSelectedIndex(conversationsList.length);
+    setNonFriend(false);
+  }
+
+  // const response = await axios.post(baseURL + "/createConversation", {
+  //   receiverDetails,
+  //   token,
+  // });
+  // setConversationId(response.data.data._id);
 };
 
 const loadConversations = async (setConversations, token) => {

@@ -12,12 +12,21 @@ import {
 import userContext from "../../context/userCotext";
 import socketContext from "../../context/socketContext";
 
-function FriendList({ name, imageIndex, userId, setCurrentFriendDetail }) {
+function FriendList({
+  name,
+  imageIndex,
+  userId,
+  setCurrentFriendDetail,
+  setNonFriend,
+  setFriendId,
+}) {
   return (
     <div
       className={styles.friendList}
       onClick={() => {
         setCurrentFriendDetail({ userId, name });
+        setNonFriend(true);
+        setFriendId(userId);
       }}
     >
       <img src={`./images/avatar/${imageIndex}.png`} alt="user" />
@@ -64,6 +73,7 @@ function Friends() {
   const [conversationSelectedIndex, setConersationSelectedIndex] = useState(-1);
   // const [conversationId, setConversationId] = useState("");
   const [friendId, setFriendId] = useState("");
+  const [nonFriend, setNonFriend] = useState(false);
 
   const { userId, token } = useContext(userContext);
   const { socket } = useContext(socketContext);
@@ -88,24 +98,44 @@ function Friends() {
   useEffect(() => {
     if (socket) {
       socket.on("addMessage", ({ data, conversationId }) => {
-        // const conv = [...conversationsList];
-        // console.log(conv);
-        // conv.forEach((c) => {
-        //   if (c._id === conversationId) {
-        //     c.messages.push(data);
-        //   }
+        // let totallyNew = true;
+
+        // setConversationsList((prev) => {
+        //   const newData = [...prev];
+        //   newData.forEach((d) => {
+        //     if (d._id === conversationId) {
+        //       const newMess = [...d.messages, data];
+        //       d.messages = newMess;
+        //       // totallyNew = true;
+        //       totallyNew = false;
+        //       console.log("the data is added");
+        //     }
+        //   });
+        //   return newData;
         // });
-        // console.log(conv);
+
+        // if (totallyNew === true) {
+        //   console.log("need a hot reload");
+
+        //   //need to hot reload and maintain previous things like just only change conversationsList
+        //   loadConversations(setConversationsList, token);
+        // }
+
         setConversationsList((prev) => {
-          console.log("error");
-          const newData = [...prev];
-          newData.forEach((d) => {
-            if (d._id === conversationId) {
-              const newMess = [...d.messages, data];
-              d.messages = newMess;
+          const index = prev.findIndex((d) => d._id === conversationId);
+
+          if (index === -1) {
+            // console.log("need a hot reload");
+
+            //need to hot reload and maintain previous things like just only change conversationsList
+            loadConversations(setConversationsList, token);
+          } else {
+            if (prev[index].messages) {
+              prev[index].messages.push(data);
+              // console.log("the data is added");
             }
-          });
-          return newData;
+          }
+          return [...prev];
         });
         // console.log(data, conversationId);
       });
@@ -189,74 +219,87 @@ function Friends() {
                       name={d.name}
                       userId={d._id}
                       key={d._id}
+                      setFriendId={setFriendId}
                       imageIndex={i + 1}
                       setCurrentFriendDetail={setCurrentFriendDetail}
+                      setNonFriend={setNonFriend}
                     />
                   ))}
-              {/* <FriendList name="Rohit Kumar" imageIndex={1} />
-              <FriendList name="Simple Person" imageIndex={2} /> */}
             </div>
           </section>
           <section className={styles.rightSection}>
-            {conversationSelectedIndex !== -1 ? (
+            {conversationSelectedIndex !== -1 || nonFriend ? (
               <>
                 <div className={styles.messagesContainer} ref={messageRef}>
-                  {/* {conversation.messages?.map((m) => (
-                    <Message
-                      message={m.message}
-                      own={m.senderId === userId ? true : false}
-                    />
-                  ))} */}
-                  {/* {conversationsList
-                    .find((d) => d._id === conversationId)
-                    .messages?.map((m) => (
-                      <Message
-                        message={m.message}
-                        own={m.senderId === userId ? true : false}
-                      />
-                    ))} */}
-                  {conversationsList[conversationSelectedIndex].messages?.map(
-                    (m, i) => (
-                      <Message
-                        message={m.message}
-                        own={m.senderId === userId ? true : false}
-                        key={i}
-                      />
-                    )
-                  )}
+                  {!nonFriend &&
+                    conversationsList[conversationSelectedIndex].messages?.map(
+                      (m, i) => (
+                        <Message
+                          message={m.message}
+                          own={m.senderId === userId ? true : false}
+                          key={i}
+                        />
+                      )
+                    )}
                 </div>
                 <footer>
-                  <button>Send a Dual</button>
-                  <form
-                    onSubmit={(e) => {
-                      e.preventDefault();
-
-                      const data = { senderId: userId, message: userMessage };
-                      addMessage(
-                        data,
-                        conversationsList[conversationSelectedIndex]._id
-                      );
-                      handleAddMessage(
-                        data,
-                        conversationsList[conversationSelectedIndex]._id,
-                        friendId
-                      );
-                      const newPush = [...conversationsList];
-                      newPush[conversationSelectedIndex].messages.push(data);
-                      setConversationsList(newPush);
-                      setUserMessage("");
+                  <button
+                    onClick={() => {
+                      if (nonFriend) {
+                        createConversation(
+                          currentFriendDetail,
+                          conversationsList,
+                          setConversationsList,
+                          setConersationSelectedIndex,
+                          setNonFriend,
+                          token
+                        );
+                      }
                     }}
                   >
-                    <input
-                      type="text"
-                      placeholder="Type a message"
-                      value={userMessage}
-                      onChange={(e) => {
-                        setUserMessage(e.target.value);
+                    {!nonFriend ? "Send a Dual" : "Add to friends"}
+                  </button>
+                  {!nonFriend && (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+
+                        const data = { senderId: userId, message: userMessage };
+                        if (!nonFriend) {
+                          addMessage(
+                            data,
+                            conversationsList[conversationSelectedIndex]._id
+                          );
+                          handleAddMessage(
+                            data,
+                            conversationsList[conversationSelectedIndex]._id,
+                            friendId
+                          );
+                          const newPush = [...conversationsList];
+                          newPush[conversationSelectedIndex].messages.push(
+                            data
+                          );
+                          setConversationsList(newPush);
+                        } else {
+                          // console.log(currentFriendDetail);
+                          //create a conversation push it into the conversationsList
+                          //set the conversationSelectedIndex to that index
+                          //and then normal message
+                        }
+                        setUserMessage("");
                       }}
-                    />
-                    <button type="submit">Send</button>
-                  </form>
+                    >
+                      <input
+                        type="text"
+                        placeholder="Type a message"
+                        value={userMessage}
+                        onChange={(e) => {
+                          setUserMessage(e.target.value);
+                        }}
+                      />
+                      <button type="submit">Send</button>
+                    </form>
+                  )}
                 </footer>
               </>
             ) : (

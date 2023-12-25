@@ -138,13 +138,14 @@
 
 .rightSection .messagesContainer {
   position: relative;
-  padding: 1rem 4rem;
+  padding: 1rem 3rem;
 }
 
 .message {
   padding: 0.2rem 0.6rem;
   /* border: 1px solid white; */
   width: fit-content;
+  margin-top: 0.5rem;
   border-radius: 8px 8px 8px 0;
   background-color: rgb(255, 255, 255, 0.8);
   color: var(--background-color);

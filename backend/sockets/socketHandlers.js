@@ -32,10 +32,7 @@ function initializeSocket(server) {
     },
   });
   io.on("connection", (socket) => {
-    console.log("a new user is added:", socket.id);
     socket.on("disconnect", () => {
-      console.log("user Disconnected:", socket.id);
-
       // onlineUsers = onlineUsers.filter((d) => d.socketId !== socket.id);
 
       const userIdToRemove = Object.keys(onlineUsers).find(
@@ -45,6 +42,7 @@ function initializeSocket(server) {
       // Check if a user was found
       if (userIdToRemove) {
         // Remove the user from the onlineUsers object
+        console.log("user Disconnected:", userIdToRemove);
         delete onlineUsers[userIdToRemove];
       }
 
@@ -63,6 +61,7 @@ function initializeSocket(server) {
         userId: content.id,
         socketId: socket.id,
       };
+      console.log("a new user is added:", content.id);
       io.emit("users", onlineUsers);
     });
 
