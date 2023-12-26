@@ -92,13 +92,17 @@ function initializeSocket(server) {
       socket.to(roomName).emit("playersUpdate", rooms[roomName].players);
     });
 
-    socket.on("startGame", (roomName) => {
+    socket.on("startGame", (friendId) => {
       const paragraph = getRandomParagraph(longgg, 50);
-      io.to(roomName).emit("startGame", paragraph);
+      socket.emit("startGame", paragraph);
+      io.to(onlineUsers[friendId]?.socketId).emit("startGame", paragraph);
     });
 
-    socket.on("indexChange", ({ index, roomName }) => {
-      socket.to(roomName).emit("indexChange", { index, socketId: socket.id });
+    socket.on("indexChange", ({ index, friendId }) => {
+      io.to(onlineUsers[friendId]?.socketId).emit("indexChange", {
+        index,
+        socketId: socket.id,
+      });
     });
 
     socket.on("finishResult", ({ wpm, roomName }) => {
@@ -109,7 +113,7 @@ function initializeSocket(server) {
     socket.on("addMessage", ({ data, conversationId, friendId }) => {
       console.log("message sent to user: " + friendId);
       if (onlineUsers[friendId]) {
-        io.to(onlineUsers[friendId].socketId).emit("addMessage", {
+        io.to(onlineUsers[friendId]?.socketId).emit("addMessage", {
           data,
           conversationId,
         });
@@ -120,6 +124,11 @@ function initializeSocket(server) {
       // console.log("data: " + data);
       // console.log("conversationId wowowow: " + conversationId);
       // socket.emit("addMessage", { data, conversationId });
+    });
+    socket.on("duelRequest", ({ friendId, conversationId }) => {
+      io.to(onlineUsers[friendId]?.socketId).emit("duelRequest", {
+        conversationId,
+      });
     });
   });
 

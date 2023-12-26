@@ -7,10 +7,12 @@ import {
   getConversation,
   loadConversations,
   searchUser,
-  sendData,
+  startMatch,
 } from "../../utlis/handleApi";
 import userContext from "../../context/userCotext";
 import socketContext from "../../context/socketContext";
+import friendContext from "../../context/friendContext";
+import { useNavigate } from "react-router-dom";
 
 function FriendList({
   name,
@@ -64,19 +66,53 @@ function Message({ message, own }) {
   );
 }
 
+function Match({ status, own, winner, speed, handleMatchStart }) {
+  let message = "";
+  if (status === "request" && !own) {
+    message = "Accept";
+  } else if (status === "request" && own) {
+    message = "Request Sent";
+  }
+
+  return (
+    <div className={`${own && styles.own} ${styles.message}`}>
+      <div className={styles.top}>DUEL</div>
+      <div
+        className={styles.bottom}
+        onClick={() => {
+          if (message === "Accept") {
+            handleMatchStart();
+          }
+        }}
+      >
+        {message}
+      </div>
+    </div>
+  );
+}
+
 function Friends() {
   const [search, setSearch] = useState("");
   const [friendsList, setFriendsList] = useState([]);
   const [currentFriendDetail, setCurrentFriendDetail] = useState("");
   const [userMessage, setUserMessage] = useState("");
-  const [conversationsList, setConversationsList] = useState([]);
-  const [conversationSelectedIndex, setConersationSelectedIndex] = useState(-1);
-  // const [conversationId, setConversationId] = useState("");
-  const [friendId, setFriendId] = useState("");
   const [nonFriend, setNonFriend] = useState(false);
 
+  // const [conversationId, setConversationId] = useState("");
+
   const { userId, token } = useContext(userContext);
-  const { socket } = useContext(socketContext);
+  const { socket, startGame } = useContext(socketContext);
+  const {
+    setUserStatus,
+    conversationsList,
+    setConversationsList,
+    friendId,
+    setFriendId,
+    conversationSelectedIndex,
+    setConersationSelectedIndex,
+    loadMessages,
+    loadMessageforDuel,
+  } = useContext(friendContext);
 
   const messageRef = useRef(null);
 
@@ -84,13 +120,25 @@ function Friends() {
     socket.emit("addMessage", { data, conversationId, friendId });
   }
 
+  function handleDuelSend(friendId) {
+    socket.emit("duelRequest", {
+      friendId,
+      conversationId: conversationsList[conversationSelectedIndex]._id,
+    });
+  }
+
+  function handleMatchStart() {
+    console.log("match will start for friend: ", friendId);
+    startGame(friendId);
+  }
+
+  useEffect(() => {
+    setUserStatus("chatting");
+  }, []);
+
   useEffect(() => {
     if (messageRef.current) {
       const container = messageRef.current;
-      // container.scrollTo({
-      //   top: container.scrollHeight,
-      //   behavior: "smooth",
-      // });
       container.scrollTop = container.scrollHeight;
     }
   }, [conversationsList, conversationSelectedIndex]);
@@ -98,36 +146,12 @@ function Friends() {
   useEffect(() => {
     if (socket) {
       socket.on("addMessage", ({ data, conversationId }) => {
-        // let totallyNew = true;
-
-        // setConversationsList((prev) => {
-        //   const newData = [...prev];
-        //   newData.forEach((d) => {
-        //     if (d._id === conversationId) {
-        //       const newMess = [...d.messages, data];
-        //       d.messages = newMess;
-        //       // totallyNew = true;
-        //       totallyNew = false;
-        //       console.log("the data is added");
-        //     }
-        //   });
-        //   return newData;
-        // });
-
-        // if (totallyNew === true) {
-        //   console.log("need a hot reload");
-
-        //   //need to hot reload and maintain previous things like just only change conversationsList
-        //   loadConversations(setConversationsList, token);
-        // }
-
         setConversationsList((prev) => {
           const index = prev.findIndex((d) => d._id === conversationId);
 
           if (index === -1) {
-            // console.log("need a hot reload");
-
             //need to hot reload and maintain previous things like just only change conversationsList
+            // console.log('a hot reload')
             loadConversations(setConversationsList, token);
           } else {
             if (prev[index].messages) {
@@ -137,7 +161,9 @@ function Friends() {
           }
           return [...prev];
         });
-        // console.log(data, conversationId);
+      });
+      socket.on("duelRequest", ({ conversationId }) => {
+        loadMessageforDuel(conversationId);
       });
     }
   }, [socket]);
@@ -152,40 +178,20 @@ function Friends() {
     }
   }, [search]);
 
-  useEffect(() => {
-    loadConversations(setConversationsList, token);
-  }, []);
-
-  // useEffect(() => {
-  //   if (conversationId) {
-  //     if (
-  //       conversationsList.find(
-  //         (c) => c._id === conversationId && c.messages === undefined
-  //       )
-  //     ) {
-  //       getConversation(conversationId, setConversationsList);
-  //     }
-  //   }
-  // }, [conversationId]);
-
-  useEffect(() => {
-    if (conversationSelectedIndex !== -1) {
-      if (conversationsList[conversationSelectedIndex].messages === undefined) {
-        getConversation(
-          conversationsList[conversationSelectedIndex]._id,
-          setConversationsList
-        );
-      }
-    }
-  }, [conversationSelectedIndex]);
-
+  const navigate = useNavigate();
   return (
     <div className={styles.friendsContainer}>
       <HeaderNav />
       <div className={styles.friendsListContainer}>
         <nav>
           <li>Friends</li>
-          <li>Groups</li>
+          <li
+            onClick={() => {
+              navigate("/");
+            }}
+          >
+            Groups
+          </li>
         </nav>
         <main>
           <section className={styles.leftSection}>
@@ -207,6 +213,7 @@ function Friends() {
                       // setConversationId={setConversationId}
                       handleSelect={() => {
                         setConersationSelectedIndex(i);
+                        loadMessages(i);
                       }}
                       setFriendId={setFriendId}
                       userId={userId}
@@ -233,13 +240,25 @@ function Friends() {
                 <div className={styles.messagesContainer} ref={messageRef}>
                   {!nonFriend &&
                     conversationsList[conversationSelectedIndex].messages?.map(
-                      (m, i) => (
-                        <Message
-                          message={m.message}
-                          own={m.senderId === userId ? true : false}
-                          key={i}
-                        />
-                      )
+                      (m, i) => {
+                        if (!m.match?.status) {
+                          return (
+                            <Message
+                              message={m.message}
+                              own={m.senderId === userId ? true : false}
+                              key={i}
+                            />
+                          );
+                        }
+                        return (
+                          <Match
+                            status={m.match.status}
+                            own={m.senderId === userId ? true : false}
+                            key={i}
+                            handleMatchStart={handleMatchStart}
+                          />
+                        );
+                      }
                     )}
                 </div>
                 <footer>
@@ -254,6 +273,13 @@ function Friends() {
                           setNonFriend,
                           token
                         );
+                      } else {
+                        startMatch(
+                          conversationsList[conversationSelectedIndex]._id,
+                          setConversationsList,
+                          token
+                        );
+                        handleDuelSend(friendId);
                       }
                     }}
                   >
@@ -265,27 +291,20 @@ function Friends() {
                         e.preventDefault();
 
                         const data = { senderId: userId, message: userMessage };
-                        if (!nonFriend) {
-                          addMessage(
-                            data,
-                            conversationsList[conversationSelectedIndex]._id
-                          );
-                          handleAddMessage(
-                            data,
-                            conversationsList[conversationSelectedIndex]._id,
-                            friendId
-                          );
-                          const newPush = [...conversationsList];
-                          newPush[conversationSelectedIndex].messages.push(
-                            data
-                          );
-                          setConversationsList(newPush);
-                        } else {
-                          // console.log(currentFriendDetail);
-                          //create a conversation push it into the conversationsList
-                          //set the conversationSelectedIndex to that index
-                          //and then normal message
-                        }
+
+                        addMessage(
+                          data,
+                          conversationsList[conversationSelectedIndex]._id
+                        );
+                        handleAddMessage(
+                          data,
+                          conversationsList[conversationSelectedIndex]._id,
+                          friendId
+                        );
+                        const newPush = [...conversationsList];
+                        newPush[conversationSelectedIndex].messages.push(data);
+                        setConversationsList(newPush);
+
                         setUserMessage("");
                       }}
                     >

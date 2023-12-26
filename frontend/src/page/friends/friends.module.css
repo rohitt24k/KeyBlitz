@@ -158,3 +158,25 @@
   box-shadow: 0 0 1px 0.5px rgb(255, 255, 255);
   color: var(--primary-color);
 }
+
+.message .top {
+  text-align: center;
+  border-bottom: 2px solid rgb(69, 69, 69);
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.message .bottom {
+  cursor: pointer;
+  padding: 0.3rem 1.5rem;
+  background-color: rgb(69, 69, 69, 0.3);
+  border-radius: 8px;
+}
+
+.message .bottom:hover {
+  background-color: rgb(69, 69, 69, 0.4);
+}
+
+.own .top {
+  border-bottom: 2px solid rgb(255, 255, 255, 0.8);
+}

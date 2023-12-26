@@ -151,6 +151,15 @@ const addMessage = async (data, conversationId) => {
   });
 };
 
+const startMatch = async (conversationId, setConversationsList, token) => {
+  const response = await axios.post(baseURL + "/startMatch", {
+    conversationId,
+    token,
+  });
+  await getConversation(conversationId, setConversationsList);
+  console.log(response.data.data);
+};
+
 export {
   handleSignup,
   handleSignin,
@@ -160,4 +169,5 @@ export {
   loadConversations,
   getConversation,
   addMessage,
+  startMatch,
 };

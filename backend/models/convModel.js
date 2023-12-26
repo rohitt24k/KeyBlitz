@@ -21,6 +21,11 @@ const convSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
+        match: {
+          winner: String,
+          speed: [Number],
+          status: String,
+        },
         timestamp: {
           type: Date,
           default: Date.now,

@@ -4,14 +4,16 @@ import { Car1, Car2 } from "../svgs/car";
 import Track from "../svgs/track";
 import styles from "./challenge.module.css";
 import socketContext from "../../context/socketContext";
+import friendContext from "../../context/friendContext";
 
 function Challenge() {
   const carsSvg = useRef(null);
   const { handleTextIndexChange, socket } = useContext(socketContext);
+  const { friendId } = useContext(friendContext);
 
   useEffect(() => {
     if (socket) {
-      socket.on("indexChange", ({ index, socketId }) => {
+      socket.on("indexChange", ({ index }) => {
         handleOpponentCarMove(index);
       });
     }
@@ -35,6 +37,10 @@ function Challenge() {
     }
   }
 
+  function handleIndex(index) {
+    handleTextIndexChange(index, friendId);
+  }
+
   return (
     <div className={styles.challengeContainer}>
       <section className={styles.topSection}>
@@ -48,7 +54,7 @@ function Challenge() {
       </section>
       <section>
         <MainTyping
-          handleTextIndexChange={handleTextIndexChange}
+          handleIndex={handleIndex}
           handleOwnCarMove={handleOwnCarMove}
         />
       </section>

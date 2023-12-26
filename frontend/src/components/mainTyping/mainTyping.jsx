@@ -3,7 +3,7 @@ import styles from "./mainTyping.module.css";
 import TypeLetter from "../typeLetter/typeLetter";
 import textContext from "../../context/textContext";
 
-function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
+function MainTyping({ handleIndex, handleOwnCarMove }) {
   const {
     textToBeTyped,
     typeSpeedData,
@@ -35,7 +35,7 @@ function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
   useEffect(() => {
     if (isOnline && textIndex !== 0) {
       //push to room when textIndex is changed
-      handleTextIndexChange(textIndex);
+      handleIndex(textIndex);
       handleOwnCarMove(textIndex);
     }
   }, [textIndex]);
@@ -82,8 +82,14 @@ function MainTyping({ handleTextIndexChange, handleOwnCarMove }) {
     }
 
     // Stop the timer on blur or when typing is completed
-    if (isBlur || textIndex === textData.length) {
-      clearInterval(intervalId);
+    if (!isOnline) {
+      if (isBlur || textIndex === textData.length) {
+        clearInterval(intervalId);
+      }
+    } else {
+      if (textIndex === textData.length) {
+        clearInterval(intervalId);
+      }
     }
 
     // Cleanup function to clear the interval

@@ -122,10 +122,35 @@ const addMessage = async (req, res) => {
   }
 };
 
+const startMatch = async (req, res) => {
+  const token = req.body.token?.split(" ")[1];
+  const { conversationId } = req.body;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    const pushData = { senderId: decoded.id, match: { status: "request" } };
+    const response = await convModel.findByIdAndUpdate(
+      { _id: conversationId },
+      { $push: { messages: pushData } },
+      { new: true }
+    );
+    res.status(200).json({
+      status: "success",
+      message: "Request successfully sent",
+      data: response,
+    });
+  } catch (error) {
+    console.log("error in startMatch: ", error);
+    res
+      .status(500)
+      .json({ status: "error", message: "there was an error starting match" });
+  }
+};
+
 module.exports = {
   searchUser,
   createConversation,
   loadConversations,
   getConversation,
   addMessage,
+  startMatch,
 };

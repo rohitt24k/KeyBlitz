@@ -28,6 +28,10 @@ export function SocketProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("socket re rendered");
+  }, []);
+
+  useEffect(() => {
     if (socket && isCompleted) {
       socket.emit("finishResult", { wpm, roomName: roomDetails.roomName });
     }
@@ -102,18 +106,19 @@ export function SocketProvider({ children }) {
     socket.emit("joinRoom", roomName);
   }
 
-  function startGame() {
-    socket.emit("startGame", roomDetails.roomName);
+  function startGame(friendId) {
+    socket.emit("startGame", friendId);
   }
 
-  function handleTextIndexChange(index) {
-    socket.emit("indexChange", { index, roomName: roomDetails.roomName });
+  function handleTextIndexChange(index, friendId) {
+    socket.emit("indexChange", { index, friendId });
+    console.log("index change of me to: ", friendId);
   }
 
   return (
     <socketContext.Provider
       value={{
-        roomDetails,
+        // roomDetails,
         handleCreateSubmit,
         handleJoinSubmit,
         socketId: socket?.id,
