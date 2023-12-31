@@ -38,8 +38,8 @@ export function SocketProvider({ children }) {
   }, [isCompleted]);
 
   useEffect(() => {
-    // const newSocket = io("https://keyblitzapi.onrender.com");
-    const newSocket = io("http://192.168.1.70:3001");
+    const newSocket = io("https://keyblitzapi.onrender.com");
+    // const newSocket = io("http://192.168.1.70:3001");
 
     newSocket.on("connect", () => {
       console.log(newSocket.id);
