@@ -16,7 +16,7 @@ export function TextProvider({ children }) {
 
   //all the states
   const [textToBeTyped, setTextToBeTyped] = useState(
-    getRandomParagraph(data, 5)
+    getRandomParagraph(data, 50)
   );
   const [isCompleted, setIsCompleted] = useState(false);
   const [timePassed, setTimePassed] = useState(0);

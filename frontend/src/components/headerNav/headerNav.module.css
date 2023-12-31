@@ -13,7 +13,7 @@
   /* text-shadow: 0 0 1rem rgb(255, 255, 255, 0.5),
     0 0 1.5rem rgb(255, 255, 255, 0.65), 0 0 2.5rem #930bae, 0 0 4rem #930bae,
     0 0 5.5em #930bae; */
-  pointer-events: none;
+  cursor: pointer;
   user-select: none;
 }
 

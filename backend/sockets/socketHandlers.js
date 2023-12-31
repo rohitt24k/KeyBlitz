@@ -26,8 +26,8 @@ function initializeSocket(server) {
   const rooms = {};
   const io = new Server(server, {
     cors: {
-      // origin: "http://192.168.1.70:3000",
-      origin: "https://keyblitz.vercel.app",
+      origin: "http://192.168.1.70:3000",
+      // origin: "https://keyblitz.vercel.app",
       methods: ["GET", "POST"],
     },
   });

@@ -8,6 +8,7 @@ function InputBox({
   placeholder,
   value,
   handleChange,
+  error,
   style,
 }) {
   return (
@@ -24,6 +25,7 @@ function InputBox({
           }}
           style={style}
         />
+        {error && <p className={styles.error}>*{error}</p>}
       </label>
     </div>
   );

@@ -27,3 +27,10 @@
   border-radius: 1.5em;
   box-shadow: rgba(174, 169, 169, 0.16) 0px 3px 7px;
 }
+
+.inputContainer > label > .error {
+  color: rgb(234, 50, 50);
+  text-align: center;
+  font-weight: 300;
+  font-size: 0.7rem;
+}
