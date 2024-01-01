@@ -18,8 +18,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: "http://192.168.1.70:3000",
-    // origin: "https://keyblitz.vercel.app",
+    // origin: "http://192.168.1.70:3000",
+    origin: "https://keyblitz.vercel.app",
     credentials: true,
   })
 );
