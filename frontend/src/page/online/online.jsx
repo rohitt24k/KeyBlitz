@@ -68,7 +68,7 @@ function Online() {
           </form>
         </section>
 
-        {roomDetails.isInaRoom && (
+        {roomDetails?.isInaRoom && (
           <section className={styles.rightSection}>
             <p className="h5">{roomDetails.roomName}</p>
             <div className={styles.playerContainerDiv}>

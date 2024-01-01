@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseURL = "http://192.168.1.70:3001/api";
-const baseURL = "https://keyblitzapi.onrender.com/api";
+const baseURL = "http://192.168.1.70:3001/api";
+// const baseURL = "https://keyblitzapi.onrender.com/api";
 
 // const cookie = document.cookie.split("; ");
 // let token;

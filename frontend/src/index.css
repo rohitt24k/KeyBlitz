@@ -10,7 +10,12 @@ body {
   /* font-family: "Abril Fatface", serif; */
   /* font-family: 'Roboto Mono', monospace; */
   height: 100vh;
-  background: rgb(2, 23, 44);
+  /* background: rgb(2, 23, 44); */
+  background: linear-gradient(
+    135deg,
+    hsl(205, 100%, 64%) 0%,
+    hsl(205, 100%, 36%) 100%
+  );
   /* background: linear-gradient(
     321deg,
     rgba(16, 20, 24, 1) 16%,
@@ -32,7 +37,8 @@ body {
   --primary-color: rgb(255, 255, 255);
   --secondary-color: rgb(69, 69, 69);
   --secondary-color-dark: rgb(56, 56, 56);
-  --error-color: rgb(244, 64, 52);
+  --error-color: #ad3733;
+  /* --error-color: rgb(244, 64, 52); */
 }
 
 h6,
@@ -85,7 +91,7 @@ h1 {
 .wordError::after {
   content: "";
   position: absolute;
-  background-color: red;
+  background-color: var(--error-color);
   bottom: 0;
   left: 0;
   width: 100%;

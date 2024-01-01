@@ -7,7 +7,10 @@
 }
 
 .loginContainer {
-  width: 350px;
+  box-shadow: -1px 1px 4px 0 rgb(16, 20, 24, 0.5);
+  padding: 2rem;
+  border-radius: 20px;
+  width: 380px;
 }
 .loginContainer h4 {
   color: var(--primary-color);
@@ -34,9 +37,13 @@
   text-decoration: underline;
 }
 
+.loginContainer footer span:hover {
+  color: rgb(44, 44, 153);
+}
+
 .forgotPasswordLink {
   color: var(--blue);
-  font-size: var(--text-medium);
+  font-size: 14px;
   font-weight: 500;
   text-align: right;
   cursor: pointer;

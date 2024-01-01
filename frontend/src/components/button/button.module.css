@@ -7,4 +7,9 @@
   padding: 0.6em 0;
   border-radius: 50px;
   cursor: pointer;
+  box-shadow: -1px 1px 2px 0 rgb(255, 255, 255, 0.4);
+}
+
+.buttonContainer button:hover {
+  box-shadow: inset -1px 1px 2px 0 rgb(255, 255, 255, 0.6);
 }

@@ -212,7 +212,6 @@ function Login() {
             </footer>
           </form>
         </div>
-        <div className={styles.rightContainer}>{/* img */}</div>
       </div>
     </div>
   );

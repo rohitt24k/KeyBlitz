@@ -13,7 +13,7 @@ function HeaderNav() {
           if (location.pathname !== "/") navigate("/");
         }}
       >
-        APPBLITZ
+        KEYBLITZ
       </h4>
       <div>
         <button

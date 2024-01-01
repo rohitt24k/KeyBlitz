@@ -32,7 +32,7 @@ const ChartComponenet = ({ data }) => {
         label: "Speed (WPM)",
         data: data,
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
+        borderColor: "rgb(255, 255, 255,0.6)",
         tension: 0.5,
       },
     ],
