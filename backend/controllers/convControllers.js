@@ -133,6 +133,18 @@ const startMatch = async (req, res) => {
       { $push: { messages: pushData } },
       { new: true }
     );
+
+    const id = response.messages.slice(-1)[0]._id;
+    console.log("THE ID IS: ", id);
+
+    setTimeout(async () => {
+      const response = await convModel.updateOne(
+        { _id: conversationId },
+        { $pull: { messages: { _id: id } } },
+        { new: true }
+      );
+    }, 1000 * 60);
+
     res.status(200).json({
       status: "success",
       message: "Request successfully sent",

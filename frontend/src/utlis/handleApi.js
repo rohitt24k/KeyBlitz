@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseURL = "http://192.168.1.70:3001/api";
-const baseURL = "https://keyblitzapi.onrender.com/api";
+const baseURL = "http://192.168.1.70:3001/api";
+// const baseURL = "https://keyblitzapi.onrender.com/api";
 
 // const cookie = document.cookie.split("; ");
 // let token;
@@ -15,9 +15,11 @@ const handleSignup = async (
   name,
   email,
   password,
-  setIsLoading,
   handleSetUserToken,
-  setUserId
+  setIsLoading,
+  setUserId,
+  setError,
+  setOwnName
 ) => {
   try {
     setIsLoading(true);
@@ -25,13 +27,23 @@ const handleSignup = async (
     const response = await axios.post(baseURL + "/signup", data, {
       withCredentials: true,
     });
-    const { token, id } = response.data;
+    const { token, id, ownName } = response.data;
     setUserId(id);
-    document.cookie = `token=Bearer ${token}`;
-    document.cookie = `userId=${id}`;
-    handleSetUserToken(response.data);
+    setOwnName(ownName);
+
+    let expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+
+    document.cookie = `userId=${id}; expires=${expires}`;
+    document.cookie = `token=Bearer ${token}; expires=${expires}`;
+    document.cookie = `name=${ownName}; expires=${expires}`;
+    handleSetUserToken(`Bearer ${token}`);
   } catch (error) {
-    console.log("There was an error during singup", error.response);
+    if (error.response.data.message === "the user already exists") {
+      setError((prev) => {
+        return { ...prev, email: "The user is already registered" };
+      });
+    }
   } finally {
     setIsLoading(false);
   }
@@ -42,20 +54,36 @@ const handleSignin = async (
   password,
   setIsLoading,
   setUserId,
-  handleSetUserToken
+  handleSetUserToken,
+  setError,
+  setOwnName
 ) => {
   try {
     const data = { email, password };
     const response = await axios.post(baseURL + "/signin", data, {
       withCredentials: true,
     });
-    const { token, id } = response.data;
+    const { token, id, name } = response.data;
     setUserId(id);
-    document.cookie = `userId=${id}`;
-    document.cookie = `token=Bearer ${token}`;
-    handleSetUserToken(response.data);
+    setOwnName(name);
+    let expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+
+    document.cookie = `userId=${id}; expires=${expires}`;
+    document.cookie = `token=Bearer ${token}; expires=${expires}`;
+    document.cookie = `name=${name}; expires=${expires}`;
+    handleSetUserToken(`Bearer ${token}`);
   } catch (error) {
-    console.log("There was an error during signin", error.response);
+    // console.log("There was an error during signin", error.response);
+    if (error.response.data.message === "Password incorrect") {
+      setError((prev) => {
+        return { ...prev, password: "The Password is incorrect" };
+      });
+    } else if (error.response.data.message === "the user is not registered") {
+      setError((prev) => {
+        return { ...prev, email: "The email is not registered" };
+      });
+    }
   } finally {
     setIsLoading(false);
   }
@@ -156,8 +184,17 @@ const startMatch = async (conversationId, setConversationsList, token) => {
     conversationId,
     token,
   });
-  await getConversation(conversationId, setConversationsList);
-  console.log(response.data.data);
+
+  setConversationsList((prev) => {
+    const newPrev = prev.map((p) => {
+      if (p._id === conversationId) {
+        p.messages = response.data.data.messages;
+        return p;
+      }
+      return p;
+    });
+    return newPrev;
+  });
 };
 
 export {

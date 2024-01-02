@@ -29,7 +29,7 @@
 }
 
 .inputContainer > label > .error {
-  color: var(--error-color);
+  color: var(--primary-color);
   text-align: center;
   font-weight: 300;
   font-size: 0.7rem;

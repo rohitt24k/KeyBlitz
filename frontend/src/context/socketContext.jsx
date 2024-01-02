@@ -2,16 +2,21 @@ import { useNavigate } from "react-router-dom";
 import userContext from "./userCotext";
 import { io } from "socket.io-client";
 import textContext from "./textContext";
+import friendContext from "./friendContext";
 
 const { createContext, useEffect, useContext, useState } = require("react");
 
 const socketContext = createContext();
 
 export function SocketProvider({ children }) {
-  const { token } = useContext(userContext);
+  const { token, userId, ownName } = useContext(userContext);
   const [socket, setSocket] = useState(null);
+  const [matchResult, setMatchResult] = useState([]);
+  const [showOfflinePopup, setShowOfflinePopup] = useState(false);
   const { setTextToBeTyped, setIsOnline, isCompleted, wpm } =
     useContext(textContext);
+
+  const { friendId } = useContext(friendContext);
 
   const [roomDetails, setRoomDetails] = useState({
     isInaRoom: false,
@@ -28,18 +33,18 @@ export function SocketProvider({ children }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("socket re rendered");
-  }, []);
-
-  useEffect(() => {
-    if (socket && isCompleted) {
-      socket.emit("finishResult", { wpm, roomName: roomDetails.roomName });
+    if (socket && isCompleted && friendId) {
+      socket.emit("finishResult", { wpm: wpm.current, friendId, token });
+      setMatchResult((prev) => {
+        prev.push({ userId, wpm: wpm.current, name: ownName });
+        return [...prev];
+      });
     }
   }, [isCompleted]);
 
   useEffect(() => {
-    const newSocket = io("https://keyblitzapi.onrender.com");
-    // const newSocket = io("http://192.168.1.70:3001");
+    // const newSocket = io("https://keyblitzapi.onrender.com");
+    const newSocket = io("http://192.168.1.70:3001");
 
     newSocket.on("connect", () => {
       console.log(newSocket.id);
@@ -86,14 +91,23 @@ export function SocketProvider({ children }) {
       });
 
       socket.on("startGame", (paragraph) => {
-        console.log("the game will start in 3 2 1...");
-        navigate("/challenge");
-        setTextToBeTyped(paragraph);
-        setIsOnline(true);
+        if (paragraph === null) {
+          console.log("player is offline");
+          setShowOfflinePopup(true);
+        } else {
+          console.log("the game will start in 3 2 1...");
+          navigate("/challenge");
+          setTextToBeTyped(paragraph);
+          setIsOnline(true);
+          setMatchResult([]);
+        }
       });
 
-      socket.on("finishResult", (playersDetail) => {
-        setResult(Object.values(playersDetail));
+      socket.on("finishResult", ({ wpm, userId, name }) => {
+        setMatchResult((prev) => {
+          prev.push({ userId, wpm, name: name });
+          return [...prev];
+        });
       });
     }
   }, [socket]);
@@ -126,6 +140,9 @@ export function SocketProvider({ children }) {
         handleTextIndexChange,
         socket,
         result,
+        matchResult,
+        showOfflinePopup,
+        setShowOfflinePopup,
       }}
     >
       {children}

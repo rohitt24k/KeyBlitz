@@ -37,11 +37,11 @@ function App() {
           element={
             <UserProvider>
               <TextProvider>
-                <SocketProvider>
-                  <FriendProvider>
+                <FriendProvider>
+                  <SocketProvider>
                     <Online />
-                  </FriendProvider>
-                </SocketProvider>
+                  </SocketProvider>
+                </FriendProvider>
               </TextProvider>
             </UserProvider>
           }
@@ -51,11 +51,11 @@ function App() {
           element={
             <UserProvider>
               <TextProvider>
-                <SocketProvider>
-                  <FriendProvider>
+                <FriendProvider>
+                  <SocketProvider>
                     <ChallengeHome />
-                  </FriendProvider>
-                </SocketProvider>
+                  </SocketProvider>
+                </FriendProvider>
               </TextProvider>
             </UserProvider>
           }
@@ -65,11 +65,11 @@ function App() {
           element={
             <UserProvider>
               <TextProvider>
-                <SocketProvider>
-                  <FriendProvider>
+                <FriendProvider>
+                  <SocketProvider>
                     <Friends />
-                  </FriendProvider>
-                </SocketProvider>
+                  </SocketProvider>
+                </FriendProvider>
               </TextProvider>
             </UserProvider>
           }

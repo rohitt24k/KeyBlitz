@@ -26,8 +26,8 @@ function initializeSocket(server) {
   const rooms = {};
   const io = new Server(server, {
     cors: {
-      // origin: "http://192.168.1.70:3000",
-      origin: "https://keyblitz.vercel.app",
+      origin: "http://192.168.1.70:3000",
+      // origin: "https://keyblitz.vercel.app",
       methods: ["GET", "POST"],
     },
   });
@@ -51,8 +51,8 @@ function initializeSocket(server) {
         io.to(room.roomName).emit("playersUpdate", room.players);
       });
     });
-    socket.on("addNewUser", (token) => {
-      token = token.token.split(" ")[1];
+    socket.on("addNewUser", ({ token }) => {
+      token = token.split(" ")[1];
 
       const content = jwt.verify(token, process.env.JWT_SECRET_KEY);
       onlineUsers[content.id] = {
@@ -94,8 +94,13 @@ function initializeSocket(server) {
 
     socket.on("startGame", (friendId) => {
       const paragraph = getRandomParagraph(longgg, 50);
-      socket.emit("startGame", paragraph);
-      io.to(onlineUsers[friendId]?.socketId).emit("startGame", paragraph);
+      if (onlineUsers[friendId] === undefined) {
+        socket.emit("startGame", null);
+      } else {
+        socket.emit("startGame", paragraph);
+
+        io.to(onlineUsers[friendId]?.socketId).emit("startGame", paragraph);
+      }
     });
 
     socket.on("indexChange", ({ index, friendId }) => {
@@ -105,9 +110,18 @@ function initializeSocket(server) {
       });
     });
 
-    socket.on("finishResult", ({ wpm, roomName }) => {
-      rooms[roomName].players[socket.id].wpm = wpm.current;
-      io.to(roomName).emit("finishResult", rooms[roomName].players);
+    socket.on("finishResult", ({ wpm, friendId, token }) => {
+      try {
+        token = token.split(" ")[1];
+        const content = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        io.to(onlineUsers[friendId]?.socketId).emit("finishResult", {
+          wpm,
+          userId: content.id,
+          name: content.name,
+        });
+      } catch (error) {
+        console.log("error while sending finish result", error);
+      }
     });
 
     socket.on("addMessage", ({ data, conversationId, friendId }) => {

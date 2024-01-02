@@ -1,3 +1,5 @@
+import { useContext } from "react";
+import socketContext from "../../context/socketContext";
 import HeaderNav from "../headerNav/headerNav";
 import ShowResult from "../showResult/showResult";
 import styles from "./onlineResult.module.css";
@@ -13,7 +15,7 @@ function Rank({ name, wpm, index }) {
 }
 
 function OnlineResult() {
-  // const { result } = useContext(socketContext);
+  const { matchResult } = useContext(socketContext);
   const result = [
     { name: "Rohit", wpm: 59 },
     { name: "shyam", wpm: 55 },
@@ -39,8 +41,8 @@ function OnlineResult() {
         </section>
         <section className={styles.rightSide}>
           <p className="h5">LeaderBoard</p>
-          {result.map((d, i) => (
-            <Rank name={d.name} wpm={d.wpm} index={i} />
+          {matchResult.map((d, i) => (
+            <Rank name={d.name} wpm={d.wpm} index={i} key={i} />
           ))}
         </section>
       </main>

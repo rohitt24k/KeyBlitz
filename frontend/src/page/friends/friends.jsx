@@ -13,6 +13,7 @@ import userContext from "../../context/userCotext";
 import socketContext from "../../context/socketContext";
 import friendContext from "../../context/friendContext";
 import { useNavigate } from "react-router-dom";
+import OfflinePopup from "../../components/offlinePopup/offlinePopup";
 
 function FriendList({
   name,
@@ -101,7 +102,8 @@ function Friends() {
   // const [conversationId, setConversationId] = useState("");
 
   const { userId, token } = useContext(userContext);
-  const { socket, startGame } = useContext(socketContext);
+  const { socket, startGame, showOfflinePopup, setShowOfflinePopup } =
+    useContext(socketContext);
   const {
     setUserStatus,
     conversationsList,
@@ -130,6 +132,24 @@ function Friends() {
   function handleMatchStart() {
     console.log("match will start for friend: ", friendId);
     startGame(friendId);
+  }
+
+  function handleExpireDual(m) {
+    const time = (new Date() - new Date(m.timestamp)) / 1000;
+    const timeRemaining = 60 - Math.round(time) + 2;
+    if (timeRemaining > 0) {
+      setTimeout(() => {
+        getConversation(
+          conversationsList[conversationSelectedIndex]._id,
+          setConversationsList
+        );
+      }, timeRemaining);
+    } else {
+      getConversation(
+        conversationsList[conversationSelectedIndex]._id,
+        setConversationsList
+      );
+    }
   }
 
   useEffect(() => {
@@ -250,6 +270,8 @@ function Friends() {
                             />
                           );
                         }
+
+                        handleExpireDual(m);
                         return (
                           <Match
                             status={m.match.status}
@@ -262,6 +284,9 @@ function Friends() {
                     )}
                 </div>
                 <footer>
+                  {showOfflinePopup && (
+                    <OfflinePopup setShowOfflinePopup={setShowOfflinePopup} />
+                  )}
                   <button
                     onClick={() => {
                       if (nonFriend) {

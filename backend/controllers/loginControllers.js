@@ -15,7 +15,7 @@ exports.signup = async (req, res) => {
       if (userData) {
         res.status(409).json({
           status: "error",
-          messsage: "the user already exists",
+          message: "the user already exists",
         });
       } else {
         const bcrypt = require("bcrypt");
@@ -40,7 +40,9 @@ exports.signup = async (req, res) => {
         // res.cookie("token", `Bearer ${token}`, {
         //   expires: new Date(Date.now() + 84500 * 1000 * 7),
         // });
-        return res.status(200).json({ token, id: user._id });
+        return res
+          .status(200)
+          .json({ token, id: user._id, ownName: user.name });
       }
     } catch (error) {
       console.error("Error during signup:", error);
@@ -86,7 +88,9 @@ exports.signin = async (req, res) => {
               //   expires: new Date(Date.now() + 84500 * 1000 * 7),
               // });
 
-              res.status(200).json({ token, id: userData._id });
+              res
+                .status(200)
+                .json({ token, id: userData._id, name: userData.name });
             } else {
               res
                 .status(401)
@@ -95,7 +99,7 @@ exports.signin = async (req, res) => {
           }
         });
       } else {
-        res.status(404).json({
+        res.status(400).json({
           status: "error",
           message: "the user is not registered",
         });

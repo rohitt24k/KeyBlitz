@@ -21,7 +21,7 @@ function Login() {
     password: "",
   });
 
-  const { handleSetUserToken, setUserId } = useContext(userContext);
+  const { handleSetUserToken, setUserId, setOwnName } = useContext(userContext);
 
   useEffect(() => {
     if (isRegistered === true) {
@@ -116,7 +116,9 @@ function Login() {
           loginData.password,
           handleSetUserToken,
           setIsLoading,
-          setUserId
+          setUserId,
+          setError,
+          setOwnName
         );
       }
       if (isRegistered && !isLoading) {
@@ -125,8 +127,10 @@ function Login() {
           loginData.email,
           loginData.password,
           setIsLoading,
+          setUserId,
           handleSetUserToken,
-          setUserId
+          setError,
+          setOwnName
         );
       }
     }
