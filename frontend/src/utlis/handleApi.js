@@ -155,6 +155,8 @@ const loadConversations = async (setConversations, token) => {
 };
 
 const getConversation = async (conversationId, setConversationsList) => {
+  // console.log("get conversation is being called");
+
   const response = await axios.get(
     baseURL + "/getConversation/" + conversationId
   );

@@ -134,23 +134,30 @@ function Friends() {
     startGame(friendId);
   }
 
-  function handleExpireDual(m) {
-    const time = (new Date() - new Date(m.timestamp)) / 1000;
-    const timeRemaining = 60 - Math.round(time) + 2;
-    if (timeRemaining > 0) {
-      setTimeout(() => {
-        getConversation(
-          conversationsList[conversationSelectedIndex]._id,
-          setConversationsList
-        );
-      }, timeRemaining);
-    } else {
-      getConversation(
-        conversationsList[conversationSelectedIndex]._id,
-        setConversationsList
-      );
-    }
-  }
+  // function handleExpireDual(m) {
+  //   // console.log();
+
+  //   // console.log(m.match.expiryTime);
+
+  //   const timeRemaining = new Date(m.match.expiryTime) - new Date(m.timestamp);
+  //   if (timeRemaining > 0) {
+  //     setTimeout(() => {
+  //       console.log("settimeout");
+  //       console.log(timeRemaining);
+
+  //       getConversation(
+  //         conversationsList[conversationSelectedIndex]._id,
+  //         setConversationsList
+  //       );
+  //     }, timeRemaining);
+  //   } else {
+  //     console.log("settimeout else");
+  //     getConversation(
+  //       conversationsList[conversationSelectedIndex]._id,
+  //       setConversationsList
+  //     );
+  //   }
+  // }
 
   useEffect(() => {
     setUserStatus("chatting");
@@ -269,17 +276,16 @@ function Friends() {
                               key={i}
                             />
                           );
+                        } else {
+                          return (
+                            <Match
+                              status={m.match.status}
+                              own={m.senderId === userId ? true : false}
+                              key={i}
+                              handleMatchStart={handleMatchStart}
+                            />
+                          );
                         }
-
-                        handleExpireDual(m);
-                        return (
-                          <Match
-                            status={m.match.status}
-                            own={m.senderId === userId ? true : false}
-                            key={i}
-                            handleMatchStart={handleMatchStart}
-                          />
-                        );
                       }
                     )}
                 </div>

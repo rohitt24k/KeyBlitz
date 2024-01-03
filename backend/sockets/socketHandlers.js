@@ -98,7 +98,6 @@ function initializeSocket(server) {
         socket.emit("startGame", null);
       } else {
         socket.emit("startGame", paragraph);
-
         io.to(onlineUsers[friendId]?.socketId).emit("startGame", paragraph);
       }
     });
@@ -140,9 +139,19 @@ function initializeSocket(server) {
       // socket.emit("addMessage", { data, conversationId });
     });
     socket.on("duelRequest", ({ friendId, conversationId }) => {
-      io.to(onlineUsers[friendId]?.socketId).emit("duelRequest", {
-        conversationId,
-      });
+      setTimeout(() => {
+        io.to(onlineUsers[friendId]?.socketId).emit("duelRequest", {
+          conversationId,
+        });
+      }, 50);
+      setTimeout(() => {
+        socket.emit("duelRequest", {
+          conversationId,
+        });
+        io.to(onlineUsers[friendId]?.socketId).emit("duelRequest", {
+          conversationId,
+        });
+      }, 61000);
     });
   });
 

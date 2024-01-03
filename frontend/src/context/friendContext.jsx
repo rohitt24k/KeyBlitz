@@ -18,11 +18,13 @@ export function FriendProvider({ children }) {
   function loadMessages(i) {
     if (conversationsList[i].messages === undefined) {
       getConversation(conversationsList[i]._id, setConversationsList);
+      // console.log("calling from loadMessages");
     }
   }
 
   function loadMessageforDuel(conversationId) {
     getConversation(conversationId, setConversationsList);
+    // console.log("calling from loadMessageforDuel");
   }
 
   return (

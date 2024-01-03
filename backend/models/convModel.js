@@ -25,6 +25,7 @@ const convSchema = new mongoose.Schema(
           winner: String,
           speed: [Number],
           status: String,
+          expiryTime: Date,
         },
         timestamp: {
           type: Date,

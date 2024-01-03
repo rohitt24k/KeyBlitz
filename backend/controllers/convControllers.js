@@ -126,8 +126,16 @@ const startMatch = async (req, res) => {
   const token = req.body.token?.split(" ")[1];
   const { conversationId } = req.body;
   try {
+    const currentDate = new Date();
+
+    // Create a new date that is 1 minute after the current date
+    const oneMinuteLater = new Date(currentDate);
+    oneMinuteLater.setMinutes(currentDate.getMinutes() + 1);
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    const pushData = { senderId: decoded.id, match: { status: "request" } };
+    const pushData = {
+      senderId: decoded.id,
+      match: { status: "request", expiryTime: oneMinuteLater },
+    };
     const response = await convModel.findByIdAndUpdate(
       { _id: conversationId },
       { $push: { messages: pushData } },
