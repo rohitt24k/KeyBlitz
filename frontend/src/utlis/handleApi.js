@@ -1,6 +1,6 @@
 import axios from "axios";
 
-// const baseURL = "http://192.168.1.70:3001/api";
+// const baseURL = "http://192.168.25.201:3001/api";
 const baseURL = "https://keyblitzapi.onrender.com/api";
 
 // const cookie = document.cookie.split("; ");
@@ -10,6 +10,23 @@ const baseURL = "https://keyblitzapi.onrender.com/api";
 // } else {
 //   token = cookie[1].split("=")[1];
 // }
+
+const checkBackendOnline = async (setIsServerOnline) => {
+  try {
+    const timerFunction = () => {
+      setIsServerOnline(false);
+    };
+
+    const timerId = setTimeout(timerFunction, 5000);
+    const response = await axios.get(baseURL + "/status");
+    if (response.data) {
+      setIsServerOnline(true);
+      clearTimeout(timerId);
+    }
+  } catch (error) {
+    // console.log(error);
+  }
+};
 
 const handleSignup = async (
   name,
@@ -199,6 +216,37 @@ const startMatch = async (conversationId, setConversationsList, token) => {
   });
 };
 
+const chatStart = async () => {
+  const response = await axios.get(baseURL + "/startChat");
+  // const response = await fetch(baseURL + "/startChat", {
+  //   method: "GET",
+  // });
+
+  console.log(response.data);
+
+  // // Create a readable stream from the response body
+  // const reader = response.body.getReader();
+
+  // // Initialize an empty string to accumulate chunks
+  // let accumulatedText = "";
+
+  // // Read chunks of text from the stream as they arrive
+  // while (true) {
+  //   const { done, value } = await reader.read();
+
+  //   if (done) {
+  //     break;
+  //   }
+
+  //   // Append the chunk of text to the existing text
+  //   const text = new TextDecoder().decode(value);
+  //   accumulatedText += text;
+  //   console.log(text);
+  // }
+
+  // Process the accumulated text as needed
+};
+
 export {
   handleSignup,
   handleSignin,
@@ -209,4 +257,6 @@ export {
   getConversation,
   addMessage,
   startMatch,
+  checkBackendOnline,
+  chatStart,
 };

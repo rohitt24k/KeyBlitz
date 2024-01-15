@@ -14,6 +14,7 @@ import socketContext from "../../context/socketContext";
 import friendContext from "../../context/friendContext";
 import { useNavigate } from "react-router-dom";
 import OfflinePopup from "../../components/offlinePopup/offlinePopup";
+import ServerLoader from "../../components/serverLoader/serverLoader";
 
 function FriendList({
   name,
@@ -101,7 +102,7 @@ function Friends() {
 
   // const [conversationId, setConversationId] = useState("");
 
-  const { userId, token } = useContext(userContext);
+  const { userId, token, isServerOnline } = useContext(userContext);
   const { socket, startGame, showOfflinePopup, setShowOfflinePopup } =
     useContext(socketContext);
   const {
@@ -209,6 +210,7 @@ function Friends() {
   return (
     <div className={styles.friendsContainer}>
       <HeaderNav />
+      {!isServerOnline && <ServerLoader />}
       <div className={styles.friendsListContainer}>
         <nav>
           <li>Friends</li>

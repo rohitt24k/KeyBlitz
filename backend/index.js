@@ -7,6 +7,7 @@ const connect = require("./db/connect");
 const loginRoute = require("./router/loginRoute");
 const userDataRoute = require("./router/userDataRoute");
 const convRoute = require("./router/convRoute");
+const geminiRoute = require("./router/geminiRoute");
 let cookies = require("cookie-parser");
 const sockets = require("./sockets/index");
 
@@ -18,8 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    // origin: "http://192.168.1.70:3000",
-    origin: "https://keyblitz.vercel.app",
+    origin: ["http://192.168.25.201:3000", "https://keyblitz.vercel.app"],
+    // origin: "https://keyblitz.vercel.app",
     credentials: true,
   })
 );
@@ -33,6 +34,7 @@ const io = sockets.initializeSocket(server);
 app.use("/api", userDataRoute);
 app.use("/api", loginRoute);
 app.use("/api", convRoute);
+app.use("/api", geminiRoute);
 
 server.listen(process.env.PORT, () => {
   console.log("the server is running at port 3001");

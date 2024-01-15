@@ -1,5 +1,6 @@
 import { createContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { checkBackendOnline } from "../utlis/handleApi";
 
 const userContext = createContext();
 
@@ -8,6 +9,7 @@ export function UserProvider({ children }) {
   const [token, setToken] = useState("");
   const [ownName, setOwnName] = useState("");
   const [userId, setUserId] = useState("");
+  const [isServerOnline, setIsServerOnline] = useState(true);
   const oneTime = useRef(0);
 
   if (oneTime.current === 0) {
@@ -32,6 +34,7 @@ export function UserProvider({ children }) {
     if (cookie.length !== 3) {
       navigate("/login");
     }
+    checkBackendOnline(setIsServerOnline);
   }, []);
 
   function handleSetUserToken(token) {
@@ -48,6 +51,8 @@ export function UserProvider({ children }) {
         setUserId,
         ownName,
         setOwnName,
+        isServerOnline,
+        setIsServerOnline,
       }}
     >
       {children}

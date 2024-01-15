@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import styles from "./login.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useRoutes } from "react-router-dom";
 import InputBox from "../../components/inputBox/inputBox";
 import Button from "../../components/button/button";
 import { handleSignin, handleSignup } from "../../utlis/handleApi";
 import userContext from "../../context/userCotext";
+import ServerLoader from "../../components/serverLoader/serverLoader";
 
 function Login() {
   const [isRegistered, setIsRegister] = useState(true);
@@ -21,7 +22,8 @@ function Login() {
     password: "",
   });
 
-  const { handleSetUserToken, setUserId, setOwnName } = useContext(userContext);
+  const { handleSetUserToken, setUserId, setOwnName, isServerOnline } =
+    useContext(userContext);
 
   useEffect(() => {
     if (isRegistered === true) {
@@ -138,6 +140,7 @@ function Login() {
   return (
     <div className={styles.pageContainer}>
       <div className={styles.pageContent}>
+        {!isServerOnline && <ServerLoader />}
         <div className={styles.leftContainer}>
           <form className={styles.loginContainer} onSubmit={handleSubmitButton}>
             <header>
@@ -159,7 +162,7 @@ function Login() {
                   type="text"
                   value={loginData.name}
                   handleChange={handleLoginDataChange}
-                  placeholder="Rohit Kumar"
+                  placeholder="Enter your name"
                   error={error.name}
                   disabled={isLoading}
                 />

@@ -40,11 +40,15 @@ function MainTyping({ handleIndex, handleOwnCarMove }) {
     }
   }, [textIndex]);
 
-  useEffect(() => {
-    //resetting when the text is changed
+  function reset() {
     setUserInput("");
     setTypeStart(false);
     setTextIndex(0);
+  }
+
+  useEffect(() => {
+    //resetting when the text is changed
+    reset();
   }, [textToBeTyped]);
 
   useEffect(() => {
@@ -200,7 +204,7 @@ function MainTyping({ handleIndex, handleOwnCarMove }) {
             correctCharacter: " ",
             typedCharacter: typedChar,
             position: { wordIndex: textIndex, charIndex: userInput.length },
-            errorType: "addition",
+            errorType: "A",
           };
           charErrorByUser.current.push(error);
         } else {
@@ -252,7 +256,7 @@ function MainTyping({ handleIndex, handleOwnCarMove }) {
               correctCharacter: charTyped,
               typedCharacter: typedChar,
               position: { wordIndex: textIndex, charIndex: userInput.length },
-              errorType: "Substitution",
+              errorType: "S",
             };
             charErrorByUser.current.push(error);
           }

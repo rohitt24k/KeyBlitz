@@ -44,7 +44,7 @@ export function SocketProvider({ children }) {
 
   useEffect(() => {
     const newSocket = io("https://keyblitzapi.onrender.com");
-    // const newSocket = io("http://192.168.1.70:3001");
+    // const newSocket = io("http://192.168.25.201:3001");
 
     newSocket.on("connect", () => {
       console.log(newSocket.id);

@@ -1,0 +1,67 @@
+.GeminiChatContainer {
+  height: 100vh;
+}
+
+.chatContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.allMessages {
+  /* border: 1px solid red; */
+  height: 68vh;
+  width: 85vw;
+  border-radius: 15px;
+  /* background: #1782CF; */
+  box-shadow: 0 0 4px rgb(0, 0, 0, 0.2);
+  padding: 0.5rem 3rem;
+}
+
+.allMessages .message {
+  /* border: 1px solid white; */
+  width: fit-content;
+  max-width: 80%;
+  padding: 0.5rem 0.8rem;
+  border-radius: 8px 8px 8px 0;
+  margin-top: 0.2rem;
+  background-color: #1b669c;
+  /* background-color: #2691dd; */
+  box-shadow: 2px 2px 0px #1c5880;
+}
+
+.allMessages .own {
+  border-radius: 8px 8px 0 8px;
+  box-shadow: -2px -2px 2px #2e9ff0;
+  margin-left: auto;
+}
+
+.inputBoxContainer {
+  margin-top: 1rem;
+  width: 60vw;
+  display: grid;
+  grid-template-columns: 1fr 5%;
+  background-color: white;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.inputBoxContainer > input {
+  border: none;
+  outline: none;
+  font-size: 16px;
+  padding: 0.7rem 1rem;
+}
+
+.inputBoxContainer button {
+  line-height: 0;
+  outline: none;
+  border: none;
+  background-color: transparent;
+  border-left: 1px solid black;
+  cursor: pointer;
+}
+
+.aiWords {
+  display: none;
+}

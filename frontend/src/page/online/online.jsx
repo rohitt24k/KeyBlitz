@@ -1,7 +1,8 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styles from "./online.module.css";
 import HeaderNav from "../../components/headerNav/headerNav";
 import socketContext from "../../context/socketContext";
+import { chatStart } from "../../utlis/handleApi";
 
 function PlayerContainer({ name }) {
   return <div className={styles.playerContainer}>{name}</div>;
@@ -18,6 +19,8 @@ function Online() {
     socketId,
     startGame,
   } = useContext(socketContext);
+
+  useEffect(() => {}, []);
 
   return (
     <div className={styles.onlineContainer}>
@@ -66,6 +69,13 @@ function Online() {
               placeholder="CREATE ROOM"
             />
           </form>
+          <button
+            onClick={() => {
+              chatStart();
+            }}
+          >
+            click!
+          </button>
         </section>
 
         {roomDetails?.isInaRoom && (

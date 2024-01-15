@@ -8,6 +8,8 @@ import { SocketProvider } from "./context/socketContext";
 import ChallengeHome from "./page/challengeHome/challengeHome";
 import Friends from "./page/friends/friends";
 import { FriendProvider } from "./context/friendContext";
+import { GeminiProvider } from "./context/geminiContext";
+import GeminiChat from "./components/geminiChat/geminiChat";
 
 function App() {
   return (
@@ -70,6 +72,18 @@ function App() {
                     <Friends />
                   </SocketProvider>
                 </FriendProvider>
+              </TextProvider>
+            </UserProvider>
+          }
+        />
+        <Route
+          path="/aichat"
+          element={
+            <UserProvider>
+              <TextProvider>
+                <GeminiProvider>
+                  <GeminiChat />
+                </GeminiProvider>
               </TextProvider>
             </UserProvider>
           }

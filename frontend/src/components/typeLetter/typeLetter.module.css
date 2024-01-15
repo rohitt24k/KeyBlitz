@@ -6,6 +6,10 @@
   position: relative;
 }
 
+.typeLetterContainer > div {
+  transition: all 0.15s ease;
+}
+
 .typeLetterContainer span,
 .typeLetterContainer_incorrect span {
   font-family: "Roboto Mono", monospace;

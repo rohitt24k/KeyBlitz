@@ -1,6 +1,13 @@
 const authModel = require("../models/authenticationModel");
 const jwt = require("jsonwebtoken");
 
+exports.status = async (req, res) => {
+  // setTimeout(() => {
+  //   res.send("The server is online");
+  // }, 10000);
+  res.send("The server is online");
+};
+
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
 
