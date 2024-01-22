@@ -76,7 +76,7 @@ function App() {
             </UserProvider>
           }
         />
-        <Route
+        {/* <Route
           path="/aichat"
           element={
             <UserProvider>
@@ -87,7 +87,7 @@ function App() {
               </TextProvider>
             </UserProvider>
           }
-        />
+        /> */}
       </Routes>
     </BrowserRouter>
   );

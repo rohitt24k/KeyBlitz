@@ -103,13 +103,13 @@ function ShowResult() {
             >
               next
             </button>
-            <button
+            {/* <button
               onClick={() => {
                 navigate("/aichat");
               }}
             >
               Analyse
-            </button>
+            </button> */}
           </div>
         )}
       </div>
