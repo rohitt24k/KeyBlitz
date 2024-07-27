@@ -18,7 +18,7 @@ export function SocketProvider({ children }) {
 
   const { friendId } = useContext(friendContext);
 
-  const [roomDetails, setRoomDetails] = useState({
+  const [, setRoomDetails] = useState({
     isInaRoom: false,
     roomName: "Noice",
     playersInRoom: [
@@ -28,7 +28,7 @@ export function SocketProvider({ children }) {
     ],
   });
 
-  const [result, setResult] = useState([]);
+  const [result] = useState([]);
 
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ export function SocketProvider({ children }) {
         return [...prev];
       });
     }
-  }, [isCompleted]);
+  }, [isCompleted, friendId, ownName, socket, token, userId, wpm]);
 
   useEffect(() => {
     const newSocket = io("https://keyblitzapi.onrender.com");
@@ -57,7 +57,7 @@ export function SocketProvider({ children }) {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (socket) {
@@ -110,7 +110,7 @@ export function SocketProvider({ children }) {
         });
       });
     }
-  }, [socket]);
+  }, [socket, navigate, setIsOnline, setTextToBeTyped]);
 
   function handleCreateSubmit(roomName) {
     socket.emit("createRoom", roomName);

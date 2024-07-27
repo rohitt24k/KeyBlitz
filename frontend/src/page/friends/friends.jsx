@@ -4,7 +4,6 @@ import styles from "./friends.module.css";
 import {
   addMessage,
   createConversation,
-  getConversation,
   loadConversations,
   searchUser,
   startMatch,
@@ -162,7 +161,7 @@ function Friends() {
 
   useEffect(() => {
     setUserStatus("chatting");
-  }, []);
+  }, [setUserStatus]);
 
   useEffect(() => {
     if (messageRef.current) {
@@ -194,7 +193,7 @@ function Friends() {
         loadMessageforDuel(conversationId);
       });
     }
-  }, [socket]);
+  }, [socket, loadMessageforDuel, setConversationsList, token]);
 
   useEffect(() => {
     if (search.length > 3) {

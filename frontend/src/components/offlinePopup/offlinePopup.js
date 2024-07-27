@@ -10,7 +10,7 @@ function OfflinePopup({ setShowOfflinePopup }) {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, []);
+  }, [setShowOfflinePopup]);
   return (
     <div className={styles.offlinePopupContainer}>the player is offline!</div>
   );

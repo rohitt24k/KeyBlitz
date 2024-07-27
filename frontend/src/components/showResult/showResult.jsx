@@ -3,7 +3,6 @@ import ChartComponent from "../chart/chart";
 import { useContext, useMemo } from "react";
 import TypedText from "./typedText/typedText";
 import textContext from "../../context/textContext";
-import { useNavigate } from "react-router-dom";
 
 function ShowResult() {
   const {
@@ -19,7 +18,6 @@ function ShowResult() {
   } = useContext(textContext);
 
   const textData = textToBeTyped.split(" ");
-  const navigate = useNavigate();
 
   // function setClipboard(data) {
   //   const jsonString = JSON.stringify(data);

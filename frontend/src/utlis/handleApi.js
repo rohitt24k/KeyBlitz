@@ -108,7 +108,7 @@ const handleSignin = async (
 
 const sendData = async (copyData, token) => {
   try {
-    const response = await axios.post(
+    await axios.post(
       baseURL + "/userDataIn",
       { data: copyData, token },
       {
@@ -192,7 +192,7 @@ const getConversation = async (conversationId, setConversationsList) => {
 };
 
 const addMessage = async (data, conversationId) => {
-  const response = await axios.post(baseURL + "/addMessage", {
+  await axios.post(baseURL + "/addMessage", {
     data,
     conversationId,
   });

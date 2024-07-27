@@ -32,24 +32,6 @@ export function TextProvider({ children }) {
   const finalParagraphTypedByUser = useRef("");
   const wpm = useRef(0);
 
-  function getRandomParagraph(longParagraph, length) {
-    // Split the long paragraph into an array of words
-    const words = longParagraph.split(/\s+/);
-
-    // Check if the paragraph has fewer than 50 words
-    if (words.length <= 50) {
-      return longParagraph; // Return the entire paragraph
-    }
-
-    // Choose a random starting index for the 50-word excerpt
-    const startIndex = Math.floor(Math.random() * (words.length - length));
-
-    // Extract a 50-word excerpt
-    const excerpt = words.slice(startIndex, startIndex + length).join(" ");
-
-    return excerpt;
-  }
-
   function getRandomParagraphFromArray(array, length) {
     const len = array.length - length;
     const random = Math.floor(len * Math.random());
@@ -128,7 +110,7 @@ export function TextProvider({ children }) {
       sendData(copyData, token);
       // console.log(typeErrorData);
     }
-  }, [isCompleted]);
+  }, [isCompleted, textToBeTyped, token]);
 
   return (
     <textContext.Provider

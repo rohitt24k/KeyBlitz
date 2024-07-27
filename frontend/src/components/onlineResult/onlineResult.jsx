@@ -16,10 +16,6 @@ function Rank({ name, wpm, index }) {
 
 function OnlineResult() {
   const { matchResult } = useContext(socketContext);
-  const result = [
-    { name: "Rohit", wpm: 59 },
-    { name: "shyam", wpm: 55 },
-  ];
 
   // useEffect(() => {
   //   console.log(result);

@@ -38,7 +38,7 @@ function MainTyping({ handleIndex, handleOwnCarMove }) {
       handleIndex(textIndex);
       handleOwnCarMove(textIndex);
     }
-  }, [textIndex]);
+  }, [textIndex, handleIndex, handleOwnCarMove, isOnline]);
 
   function reset() {
     setUserInput("");
@@ -100,7 +100,7 @@ function MainTyping({ handleIndex, handleOwnCarMove }) {
     return () => {
       clearInterval(intervalId);
     };
-  }, [isBlur, typeStart]);
+  }, [isBlur, typeStart, isOnline, setTimePassed, textData.length, textIndex]);
 
   function handleEmptyBackspace() {
     // console.log("this is an empty backspace");
@@ -281,7 +281,16 @@ function MainTyping({ handleIndex, handleOwnCarMove }) {
       setTypeStart(false);
       setIsCompleted(true);
     }
-  }, [userInput]);
+  }, [
+    userInput,
+    charErrorByUser,
+    finalParagraphTypedByUser,
+    setIsCompleted,
+    textData.length,
+    textIndex,
+    typeErrorData,
+    typeSpeedData,
+  ]);
 
   return (
     <div

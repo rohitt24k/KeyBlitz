@@ -9,11 +9,11 @@ export function FriendProvider({ children }) {
   const [conversationsList, setConversationsList] = useState([]);
   const [friendId, setFriendId] = useState("");
   const [conversationSelectedIndex, setConersationSelectedIndex] = useState(-1);
-  const [userStatus, setUserStatus] = useState("none"); //chatting, challenge, result
+  const [, setUserStatus] = useState("none"); //chatting, challenge, result
 
   useEffect(() => {
     loadConversations(setConversationsList, token);
-  }, []);
+  }, [token]);
 
   function loadMessages(i) {
     if (conversationsList[i].messages === undefined) {

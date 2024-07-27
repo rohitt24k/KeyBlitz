@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import HeaderNav from "../../components/headerNav/headerNav";
 import MainTyping from "../../components/mainTyping/mainTyping";
 import styles from "./home.module.css";

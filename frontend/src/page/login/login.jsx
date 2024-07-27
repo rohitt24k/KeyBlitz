@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import styles from "./login.module.css";
-import { useNavigate, useRoutes } from "react-router-dom";
 import InputBox from "../../components/inputBox/inputBox";
 import Button from "../../components/button/button";
 import { handleSignin, handleSignup } from "../../utlis/handleApi";
@@ -136,7 +135,15 @@ function Login() {
         );
       }
     }
-  }, [error]);
+  }, [
+    error,
+    handleSetUserToken,
+    isLoading,
+    isRegistered,
+    loginData,
+    setOwnName,
+    setUserId,
+  ]);
   return (
     <div className={styles.pageContainer}>
       <div className={styles.pageContent}>

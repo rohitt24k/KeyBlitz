@@ -35,7 +35,7 @@ export function UserProvider({ children }) {
       navigate("/login");
     }
     checkBackendOnline(setIsServerOnline);
-  }, []);
+  }, [navigate]);
 
   function handleSetUserToken(token) {
     setToken(token);

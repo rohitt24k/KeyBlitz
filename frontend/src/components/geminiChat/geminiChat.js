@@ -11,14 +11,9 @@ function Message({ m }) {
 }
 
 function GeminiChat() {
-  const [chat, setChat] = useState([
-    { message: "fuck you", role: "model" },
-    { message: "fuck you too", role: "user" },
-  ]);
-
   return (
     <div className={styles.GeminiChatContainer}>
-      <HeaderNav />
+      {/* <HeaderNav />
       <div className={styles.chatContainer}>
         <div className={styles.allMessages}>
           {chat.map((m) => (
@@ -39,7 +34,7 @@ function GeminiChat() {
       </div>
       <div className={styles.aiWords}>
         use ai suggested words to practice typing
-      </div>
+      </div> */}
     </div>
   );
 }
